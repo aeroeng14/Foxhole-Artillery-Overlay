@@ -16,41 +16,46 @@ public class MainPanelController : MonoBehaviour
 {
     // define the panel GameObjects we will be working with
     [SerializeField] GameObject MainMenuPanel;
-    [SerializeField] GameObject OptionsMenuPanel;
+    [SerializeField] GameObject OptionsMenuCanvas;
 
     [SerializeField] Canvas GameWindowCanvas;
 
     //[SerializeField] GameObject gridMarker;
     [SerializeField] GameObject gunMarker;
     [SerializeField] GameObject targetMarker;
-    
+
+    [SerializeField] GameObject SupportingCanvas;
 
     public void OpenMainPanel()
     {
-        // check the panel status
-        bool main_menu_is_open = MainMenuPanel.activeSelf;
-
         // check if the panel is not already open
-        if (!main_menu_is_open)
+        if (!MainMenuPanel.activeSelf)
         {
-            MainMenuPanel.SetActive(true);
-            main_menu_is_open = true;
+            MainMenuPanel.SetActive(true); // open the main panel
+            SupportingCanvas.SetActive(true); // open the aiming box and wind gauge
         }
         // if it's already open, close the panel
         else
         {
             MainMenuPanel.SetActive(false);
-            main_menu_is_open = false;
 
+            //
             // close any other UI elements open and reset their positions if need be
-            if (OptionsMenuPanel.activeSelf) { OptionsMenuPanel.SetActive(false); }
+            //
+            if (OptionsMenuCanvas.activeSelf) { OptionsMenuCanvas.SetActive(false); }
+
+            // close the SupportCanvas and reset wind using the method in that attached script
+            WindGauge wind = SupportingCanvas.GetComponentInChildren<WindGauge>();
+            wind.reset_wind_canvas();
+            SupportingCanvas.SetActive(false);
 
             //if (gridMarker.activeSelf) { gridMarker.SetActive(false); }
             //gridMarker.GetComponent<RectTransform>().localPosition = Vector3.zero;
+            //gridMarker.GetComponent<RectTransform>().localScale = Vector3.one;
 
             if (gunMarker.activeSelf) { gunMarker.SetActive(false); }
             gunMarker.GetComponent<RectTransform>().localPosition = Vector3.zero;
-            
+
             if (targetMarker.activeSelf) { targetMarker.SetActive(false); }
             targetMarker.GetComponent<RectTransform>().localPosition = Vector3.zero;
         }
@@ -58,21 +63,10 @@ public class MainPanelController : MonoBehaviour
 
     public void OpenOptionsPanel()
     {
-        // check the panel status
-        bool options_menu_is_open = OptionsMenuPanel.activeSelf;
-
         // check if the panel is not already open
-        if (!options_menu_is_open)
-        {
-            OptionsMenuPanel.SetActive(true);
-            options_menu_is_open = true;
-        }
+        if (!OptionsMenuCanvas.activeSelf) { OptionsMenuCanvas.SetActive(true); }
         // if it's already open, close the panel
-        else
-        {
-            OptionsMenuPanel.SetActive(false);
-            options_menu_is_open = false;
-        }
+        else { OptionsMenuCanvas.SetActive(false); }
     }
 
     //public void GridMarkerOpen()
@@ -84,8 +78,9 @@ public class MainPanelController : MonoBehaviour
     //    }
     //    else
     //    {
-    //        // reset position to center and hide
+    //        // reset position to center, rescale, and hide
     //        gridMarker.GetComponent<RectTransform>().localPosition = Vector3.zero;
+    //        gridMarker.GetComponent<RectTransform>().localScale = Vector3.one;
     //        gridMarker.SetActive(false);
     //    }
     //}
