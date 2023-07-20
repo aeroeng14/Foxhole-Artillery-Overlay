@@ -1,3 +1,4 @@
+using Mono.Cecil.Cil;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -20,9 +21,10 @@ public class MainPanelController : MonoBehaviour
 
     [SerializeField] Canvas GameWindowCanvas;
 
-    //[SerializeField] GameObject gridMarker;
+    [SerializeField] GameObject gridMarker;
     [SerializeField] GameObject gunMarker;
     [SerializeField] GameObject targetMarker;
+    [SerializeField] GameObject aimingLine;
 
     [SerializeField] GameObject SupportingCanvas;
 
@@ -37,6 +39,8 @@ public class MainPanelController : MonoBehaviour
         // if it's already open, close the panel
         else
         {
+            CalculateAiming calculateaiming_var = SupportingCanvas.GetComponentInChildren<CalculateAiming>();
+
             MainMenuPanel.SetActive(false);
 
             //
@@ -44,20 +48,33 @@ public class MainPanelController : MonoBehaviour
             //
             if (OptionsMenuCanvas.activeSelf) { OptionsMenuCanvas.SetActive(false); }
 
-            // close the SupportCanvas and reset wind using the method in that attached script
+            // reset wind using the method in that attached script
             WindGauge wind = SupportingCanvas.GetComponentInChildren<WindGauge>();
             wind.reset_wind_canvas();
+
+            // reset the text on the az/distance text panel
+            calculateaiming_var.reset_text();
+
+            //close the SupportCanvas
             SupportingCanvas.SetActive(false);
 
-            //if (gridMarker.activeSelf) { gridMarker.SetActive(false); }
-            //gridMarker.GetComponent<RectTransform>().localPosition = Vector3.zero;
-            //gridMarker.GetComponent<RectTransform>().localScale = Vector3.one;
+            // close and reset the grid scale marker icon
+            if (gridMarker.activeSelf) { gridMarker.SetActive(false); }
+            gridMarker.GetComponent<RectTransform>().localPosition = Vector3.zero;
+            calculateaiming_var.reset_slider();
 
+            // close and reset the gun marker icon
             if (gunMarker.activeSelf) { gunMarker.SetActive(false); }
             gunMarker.GetComponent<RectTransform>().localPosition = Vector3.zero;
 
+            // close and reset the target marker icon
             if (targetMarker.activeSelf) { targetMarker.SetActive(false); }
             targetMarker.GetComponent<RectTransform>().localPosition = Vector3.zero;
+
+            // turn off the gun-target vector line
+            aimingLine.SetActive(false);
+            
+            
         }
     }
 
@@ -69,21 +86,25 @@ public class MainPanelController : MonoBehaviour
         else { OptionsMenuCanvas.SetActive(false); }
     }
 
-    //public void GridMarkerOpen()
-    //{
-    //    // display the GameObject at the center of the screen so it can be mouse dragged
-    //    if (!gridMarker.activeSelf)
-    //    {
-    //        gridMarker.SetActive(true);
-    //    }
-    //    else
-    //    {
-    //        // reset position to center, rescale, and hide
-    //        gridMarker.GetComponent<RectTransform>().localPosition = Vector3.zero;
-    //        gridMarker.GetComponent<RectTransform>().localScale = Vector3.one;
-    //        gridMarker.SetActive(false);
-    //    }
-    //}
+    public void GridMarkerOpen()
+    {
+        // display the GameObject at the center of the screen so it can be mouse dragged
+        if (!gridMarker.activeSelf)
+        {
+            gridMarker.SetActive(true);
+
+            // get an initial pixel scale so the variable is filled
+            CalculateAiming zz = SupportingCanvas.GetComponent<CalculateAiming>();
+            zz.get_scale();
+        }
+        else
+        {
+            // reset position to center, rescale, and hide
+            gridMarker.GetComponent<RectTransform>().localPosition = Vector3.zero;
+            gridMarker.GetComponent<RectTransform>().localScale = Vector3.one;
+            gridMarker.SetActive(false);
+        }
+    }
 
     public void GunMarkerOpen()
     {
@@ -97,6 +118,8 @@ public class MainPanelController : MonoBehaviour
             // reset position to center and hide
             gunMarker.GetComponent<RectTransform>().localPosition = Vector3.zero;
             gunMarker.SetActive(false);
+
+            aimingLine.SetActive(false);
         }
     }
 
@@ -112,74 +135,8 @@ public class MainPanelController : MonoBehaviour
             // reset position to center and hide
             targetMarker.GetComponent<RectTransform>().localPosition = Vector3.zero;
             targetMarker.SetActive(false);
+
+            aimingLine.SetActive(false);
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //public void GridInstantiate()
-    //{
-    //    Debug.Log("Grid button pressed, spawn GameObject when there's a Prefab for it.");
-
-    //    //GameObject markericon;
-
-    //    //// check if a marker exists in the GameWindowCanvas and destroy if needed then instantiate a new one
-    //    //markericon = GameObject.Find("GridMarkerObject");
-    //    //if (markericon != null) { Destroy(markericon); }
-
-    //    //// instantiate a new one and set it's transform to the center of the canvas after parenting it
-    //    //markericon = Instantiate(gridPrefab, Vector3.zero, Quaternion.identity, GameObject.Find("GameWindowCanvas").transform);
-    //    //markericon.name = "GridMarkerObject";
-    //    //markericon.GetComponent<RectTransform>().pivot = new Vector2 (0.0f, 0.0f);
-    //    //markericon.GetComponent<RectTransform>().localPosition = Vector3.zero;
-    //}
-
-    //public void GunInstantiate()
-    //{
-    //    //Debug.Log("Gun marker button pressed, spawn GameObject.");
-
-    //    GameObject markericon;
-
-    //    // check if a marker exists in the GameWindowCanvas and destroy if needed then instantiate a new one
-    //    markericon = GameObject.Find("GunMarkerObject");
-    //    if (markericon != null) { Destroy(markericon); }
-
-    //    // instantiate a new one and set it's transform to the center of the canvas after parenting it
-    //    markericon = Instantiate(gunPrefab, Vector3.zero, Quaternion.identity, GameObject.Find("GameWindowCanvas").transform);
-    //    markericon.name = "GunMarkerObject";
-    //    markericon.GetComponent<RectTransform>().pivot = new Vector2 (0.0f, 0.0f);
-    //    markericon.GetComponent<RectTransform>().localPosition = Vector3.zero;
-
-
-
-    //}
-
-    //public void TargetInstantiate()
-    //{
-    //    //Debug.Log("Target marker button pressed, spawn GameObject.");
-
-    //    GameObject markericon;
-
-    //    // check if a marker exists in the GameWindowCanvas and destroy if needed then instantiate a new one
-    //    markericon = GameObject.Find("TargetMarkerObject");
-    //    if (markericon != null) { Destroy(markericon); }
-
-    //    // instantiate a new one and set it's transform to the center of the canvas after parenting it
-    //    markericon = Instantiate(targetPrefab, Vector3.zero, Quaternion.identity, GameObject.Find("GameWindowCanvas").transform);
-    //    markericon.name = "TargetMarkerObject";
-    //    markericon.GetComponent<RectTransform>().pivot = new Vector2 (0.0f, 0.0f);
-    //    markericon.GetComponent<RectTransform>().localPosition = Vector3.zero;
-    //}
 }
