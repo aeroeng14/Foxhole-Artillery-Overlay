@@ -35,12 +35,8 @@ public class CalculateAiming : MonoBehaviour
     public void calculate_aimpoint()
     {
         Vector3 gun_position, target_position, gun_target_vector;
-        float azimuth_deg, distance_mag_pixels;
+        float azimuth_deg, distance_mag_pixels, distance_mag_m;
         
-
-
-
-
         // make sure both markers are visible before running calculations so the user isn't confused
         if (gridMarker.activeSelf && gunMarker.activeSelf && targetMarker.activeSelf)
         {
@@ -83,11 +79,9 @@ public class CalculateAiming : MonoBehaviour
         }
         else { azimuth_deg = 0.0f; distance_mag_pixels = 0.0f;} // output zeros since there is no difference to calculate
 
+        distance_mag_m = Mathf.Round(distance_mag_pixels * pixel_scale);
 
-        Debug.Log("pixel scale " + pixel_scale);
-        Debug.Log("distance in pixels " + distance_mag_pixels);
-
-        text_panel.text = "Azimuth: " + azimuth_deg + " deg         Distance: " + distance_mag_pixels*pixel_scale + "m";
+        text_panel.text = "Azimuth: " + azimuth_deg + " deg         Distance: " + distance_mag_m + "m";
 
     }
 
@@ -113,7 +107,7 @@ public class CalculateAiming : MonoBehaviour
         AimLinePanel.SetActive(true);
     }
 
-    public float get_scale()
+    public void get_scale()
     {
         float foxhole_large_grid_m = 125.0f;
         
@@ -121,7 +115,7 @@ public class CalculateAiming : MonoBehaviour
         Vector2 scale_factor = gridMarker.GetComponent<RectTransform>().sizeDelta;
 
         // meters/pixel
-        return pixel_scale = foxhole_large_grid_m/scale_factor.x;
+        pixel_scale = foxhole_large_grid_m/scale_factor.x;
     }
 
     //void get_wind()

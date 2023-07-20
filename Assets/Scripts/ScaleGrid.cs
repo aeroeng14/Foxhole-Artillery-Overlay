@@ -7,6 +7,7 @@ public class ScaleGrid : MonoBehaviour
 {
 
     [SerializeField] GameObject scaleSlider;
+    [SerializeField] GameObject supportpanel;
 
     public void scaleicon()
     {
@@ -21,5 +22,9 @@ public class ScaleGrid : MonoBehaviour
 
         // reset the slider after applying the new scale so it's easier to manipulate each time
         scaleSlider.GetComponent<Slider>().value = 1.0f;
+
+        // set the scale after every slider adjustment to make sure it's populated for later use
+        supportpanel.GetComponent<CalculateAiming>().get_scale();
+
     }
 }
