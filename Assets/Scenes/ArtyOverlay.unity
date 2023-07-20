@@ -1967,7 +1967,7 @@ GameObject:
   - component: {fileID: 1169325508}
   - component: {fileID: 1169325507}
   m_Layer: 5
-  m_Name: TESTBackground
+  m_Name: WindTierBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2876,8 +2876,8 @@ GameObject:
   - component: {fileID: 1760671247}
   - component: {fileID: 1760671246}
   - component: {fileID: 1760671249}
-  - component: {fileID: 1760671248}
   - component: {fileID: 1760671250}
+  - component: {fileID: 1760671248}
   m_Layer: 5
   m_Name: GridMarkerImage
   m_TagString: Untagged
