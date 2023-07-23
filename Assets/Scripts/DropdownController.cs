@@ -33,7 +33,7 @@ public class DropdownController : MonoBehaviour
     public int gunType;
     public int gun;
 
-    void Start()
+    void Awake()
     {
         gunType = 0;
         gun = 0;
