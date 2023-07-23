@@ -11,8 +11,8 @@ public class TransparentWindow : MonoBehaviour
 {
     [SerializeField] private Camera mainCamera;
 
-    private bool clickThrough = true;
-    private bool prevClickThrough = true;
+    private bool clickThrough = false;
+    private bool prevClickThrough = false;
 
     private struct MARGINS
     {

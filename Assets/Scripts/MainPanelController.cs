@@ -16,18 +16,18 @@ using UnityEngine.EventSystems;
 public class MainPanelController : MonoBehaviour
 {
     // define the panel GameObjects we will be working with
-    [SerializeField] GameObject MainMenuPanel;
-    [SerializeField] GameObject OptionsMenuCanvas;
-
     [SerializeField] Canvas GameWindowCanvas;
+
+    [SerializeField] GameObject MainMenuPanel;
+    [SerializeField] GameObject OptionsMenuPanel;
+    [SerializeField] GameObject SupportingCanvas;   
 
     [SerializeField] GameObject gridMarker;
     [SerializeField] GameObject gunMarker;
     [SerializeField] GameObject targetMarker;
     [SerializeField] GameObject aimingLine;
 
-    [SerializeField] GameObject SupportingCanvas;
-
+    
     public void OpenMainPanel()
     {
         // check if the panel is not already open
@@ -46,8 +46,13 @@ public class MainPanelController : MonoBehaviour
             //
             // close any other UI elements open and reset their positions if need be
             //
-            if (OptionsMenuCanvas.activeSelf) { OptionsMenuCanvas.SetActive(false); }
-
+            if (OptionsMenuPanel.activeSelf)
+            {
+                GameObject zz = GameObject.Find("OptionsPanelCanvas");
+                zz.GetComponent<DropdownController>().reset_dropdowns();
+                OptionsMenuPanel.SetActive(false); 
+            }
+            
             // reset wind using the method in that attached script
             WindGauge wind = SupportingCanvas.GetComponentInChildren<WindGauge>();
             wind.reset_wind_canvas();
@@ -81,9 +86,9 @@ public class MainPanelController : MonoBehaviour
     public void OpenOptionsPanel()
     {
         // check if the panel is not already open
-        if (!OptionsMenuCanvas.activeSelf) { OptionsMenuCanvas.SetActive(true); }
+        if (!OptionsMenuPanel.activeSelf) { OptionsMenuPanel.SetActive(true); }
         // if it's already open, close the panel
-        else { OptionsMenuCanvas.SetActive(false); }
+        else { OptionsMenuPanel.SetActive(false); }
     }
 
     public void GridMarkerOpen()

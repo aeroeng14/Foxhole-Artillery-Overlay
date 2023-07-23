@@ -13,13 +13,20 @@ public class CalculateAiming : MonoBehaviour
     [SerializeField] GameObject AimLinePanel;
     [SerializeField] GameObject gridMarker;
     [SerializeField] GameObject scaleslider;
+    [SerializeField] GameObject WindCanvas;
     public TMP_Text text_panel;
 
     float pixel_scale;
+    int wind_tier;
+    float wind_direction;
 
-    void Start()
+    void Awake()
     {
-        text_panel.text = "Azimuth: 0 deg         Distance: 0m";
+        reset_text();
+
+        pixel_scale = 1f;
+        wind_tier = 1;
+        wind_direction = 0.0f;
     }
 
     public void reset_text()
@@ -55,23 +62,55 @@ public class CalculateAiming : MonoBehaviour
 
             // calculate the azimuth between the aiming line and due N (Up in the canvas)
             azimuth_deg = Vector3.SignedAngle(gun_target_vector, transform.up, new Vector3(0, 0, 1));
-
-            // round the numbers
-            distance_mag_pixels = Mathf.Round(distance_mag_pixels);
-            azimuth_deg = Mathf.Round(azimuth_deg * 10.0f) / 10.0f;// X.X
-
             if (azimuth_deg < 0) { azimuth_deg += 360.0f; }
-
 
             // add in the wind offset to the target location based on what gun type is firing
             // (need options selection panel working for this)
+            get_wind();
+            Debug.Log("Wind Azimuth: " + wind_direction + " Wind tier: " + wind_tier);
             //
             //
             //
             //
             //
             //
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            // round the numbers
+            distance_mag_pixels = Mathf.Round(distance_mag_pixels);// XXm format
+            azimuth_deg = Mathf.Round(azimuth_deg * 10.0f) / 10.0f;// X.Xdeg format
+
+
+            // color the aimingpanel here depending if in range or not
             //
+            //
+
 
             // draw the line between the marker icons for visual aid
             if (gun_position != target_position) { draw_projectile_line(gun_target_vector); }
@@ -81,8 +120,8 @@ public class CalculateAiming : MonoBehaviour
 
         distance_mag_m = Mathf.Round(distance_mag_pixels * pixel_scale);
 
+        // print the results to the text box
         text_panel.text = "Azimuth: " + azimuth_deg + " deg         Distance: " + distance_mag_m + "m";
-
     }
 
     void draw_projectile_line(Vector3 gun_target_vector)
@@ -118,12 +157,11 @@ public class CalculateAiming : MonoBehaviour
         pixel_scale = foxhole_large_grid_m/scale_factor.x;
     }
 
-    //void get_wind()
-    //{
-
-
-
-    //}
+    void get_wind()
+    {
+        wind_tier = WindCanvas.GetComponent<WindGauge>().wind_count;
+        wind_direction = WindCanvas.GetComponent<WindGauge>().wind_direction;
+    }
 
 
 
