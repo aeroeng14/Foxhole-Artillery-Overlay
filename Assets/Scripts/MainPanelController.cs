@@ -12,22 +12,15 @@ using UnityEngine.EventSystems;
 //  -Trigger the opening/closing of the MainMenuPanel and close the OptionsMenuPanel if it is open too on Main close
 //  -Spawning Prefab GameObjects in the GameWindowCanvas once their icon is clicked by the mouse
 //
-//
 public class MainPanelController : MonoBehaviour
 {
     // define the panel GameObjects we will be working with
-    [SerializeField] Canvas GameWindowCanvas;
-
+    [SerializeField] GameObject GameWindowCanvas;
     [SerializeField] GameObject MainMenuPanel;
     [SerializeField] GameObject OptionsMenuPanel;
-    [SerializeField] GameObject SupportingCanvas;   
+    [SerializeField] GameObject OptionsMenuCanvas;
+    [SerializeField] GameObject SupportingCanvas;
 
-    [SerializeField] GameObject gridMarker;
-    [SerializeField] GameObject gunMarker;
-    [SerializeField] GameObject targetMarker;
-    [SerializeField] GameObject aimingLine;
-
-    
     public void OpenMainPanel()
     {
         // check if the panel is not already open
@@ -36,50 +29,58 @@ public class MainPanelController : MonoBehaviour
             MainMenuPanel.SetActive(true); // open the main panel
             SupportingCanvas.SetActive(true); // open the aiming box and wind gauge
         }
-        // if it's already open, close the panel
-        else
+        else // if it's already open, close the panel
         {
-            CalculateAiming calculateaiming_var = SupportingCanvas.GetComponentInChildren<CalculateAiming>();
+            // setting up some master variables first
+            CalculateAiming calculateAiming_class = SupportingCanvas.GetComponentInChildren<CalculateAiming>();
+            WindGauge wind_class = SupportingCanvas.GetComponentInChildren<WindGauge>();
+            MarkerLocations marker_class = GameWindowCanvas.GetComponent<MarkerLocations>();
 
-            MainMenuPanel.SetActive(false);
 
-            //
-            // close any other UI elements open and reset their positions if need be
+            MainMenuPanel.SetActive(false); // close the main panel
+
+            // close any other UI elements open and reset their positions/scales/etc. if need be
             //
             if (OptionsMenuPanel.activeSelf)
             {
-                GameObject zz = GameObject.Find("OptionsPanelCanvas");
-                zz.GetComponent<DropdownController>().reset_dropdowns();
-                OptionsMenuPanel.SetActive(false); 
+                OptionsMenuCanvas.GetComponent<DropdownController>().reset_dropdowns();
+                OptionsMenuPanel.SetActive(false);
             }
-            
-            // reset wind using the method in that attached script
-            WindGauge wind = SupportingCanvas.GetComponentInChildren<WindGauge>();
-            wind.reset_wind_canvas();
+
+            // reset wind using the method in that attached script (GameObject must be active to access the attached method)
+            wind_class.reset_wind_canvas();
 
             // reset the text on the az/distance text panel
-            calculateaiming_var.reset_text();
+            calculateAiming_class.reset_text();
+
 
             //close the SupportCanvas
             SupportingCanvas.SetActive(false);
 
             // close and reset the grid scale marker icon
-            if (gridMarker.activeSelf) { gridMarker.SetActive(false); }
-            gridMarker.GetComponent<RectTransform>().localPosition = Vector3.zero;
-            calculateaiming_var.reset_slider();
+            if (marker_class.is_grid_marker_open())
+            {
+                marker_class.set_grid_marker_open(false);
+                marker_class.set_grid_marker_position(Vector3.zero);
+                marker_class.GetComponent<MarkerLocations>().reset_slider();
+            }
 
             // close and reset the gun marker icon
-            if (gunMarker.activeSelf) { gunMarker.SetActive(false); }
-            gunMarker.GetComponent<RectTransform>().localPosition = Vector3.zero;
+            if (marker_class.is_gun_marker_open())
+            {
+                marker_class.set_gun_marker_open(false);
+                marker_class.set_gun_marker_position(Vector3.zero);
+            }
 
             // close and reset the target marker icon
-            if (targetMarker.activeSelf) { targetMarker.SetActive(false); }
-            targetMarker.GetComponent<RectTransform>().localPosition = Vector3.zero;
+            if (marker_class.is_target_marker_open())
+            {
+                GameWindowCanvas.GetComponent<MarkerLocations>().set_target_marker_open(false);
+                GameWindowCanvas.GetComponent<MarkerLocations>().set_target_marker_position(Vector3.zero);
+            }
 
             // turn off the gun-target vector line
-            aimingLine.SetActive(false);
-            
-            
+            marker_class.set_aimline_open(false);
         }
     }
 
@@ -93,55 +94,59 @@ public class MainPanelController : MonoBehaviour
 
     public void GridMarkerOpen()
     {
+        MarkerLocations marker_class = GameWindowCanvas.GetComponent<MarkerLocations>();
+        //CalculateAiming calculateAiming_class = SupportingCanvas.GetComponentInChildren<CalculateAiming>();
+
         // display the GameObject at the center of the screen so it can be mouse dragged
-        if (!gridMarker.activeSelf)
+        if (!marker_class.is_grid_marker_open())
         {
-            gridMarker.SetActive(true);
+            marker_class.set_grid_marker_open(true);
 
             // get an initial pixel scale so the variable is filled
-            CalculateAiming zz = SupportingCanvas.GetComponent<CalculateAiming>();
-            zz.get_scale();
+            //marker_class.get_grid_marker_scale();
         }
         else
         {
             // reset position to center, rescale, and hide
-            gridMarker.GetComponent<RectTransform>().localPosition = Vector3.zero;
-            gridMarker.GetComponent<RectTransform>().localScale = Vector3.one;
-            gridMarker.SetActive(false);
+            marker_class.set_grid_marker_position(Vector3.zero);
+            marker_class.set_grid_marker_scale(Vector3.one);
+            marker_class.set_grid_marker_open(false);
         }
     }
 
     public void GunMarkerOpen()
     {
+        MarkerLocations marker_class = GameWindowCanvas.GetComponent<MarkerLocations>();
+
         // display the GameObject at the center of the screen so it can be mouse dragged
-        if (!gunMarker.activeSelf)
-        { 
-            gunMarker.SetActive(true); 
+        if (!marker_class.is_gun_marker_open())
+        {
+            marker_class.set_gun_marker_open(true);
         }
         else
         {
             // reset position to center and hide
-            gunMarker.GetComponent<RectTransform>().localPosition = Vector3.zero;
-            gunMarker.SetActive(false);
-
-            aimingLine.SetActive(false);
+            marker_class.set_gun_marker_position(Vector3.zero);
+            marker_class.set_gun_marker_open(false);
+            marker_class.set_aimline_open(false);
         }
     }
 
     public void TargetMarkerOpen()
     {
+        MarkerLocations marker_class = GameWindowCanvas.GetComponent<MarkerLocations>();
+
         // display the GameObject at the center of the screen so it can be mouse dragged
-        if (!targetMarker.activeSelf)
+        if (!marker_class.is_target_marker_open())
         {
-            targetMarker.SetActive(true);
+            marker_class.set_target_marker_open(true);
         }
         else
         {
             // reset position to center and hide
-            targetMarker.GetComponent<RectTransform>().localPosition = Vector3.zero;
-            targetMarker.SetActive(false);
-
-            aimingLine.SetActive(false);
+            marker_class.set_target_marker_position(Vector3.zero);
+            marker_class.set_target_marker_open(false);
+            marker_class.set_aimline_open(false);
         }
     }
 }

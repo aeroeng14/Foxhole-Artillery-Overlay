@@ -6,37 +6,44 @@ using UnityEngine.UI;
 
 public class DropdownController : MonoBehaviour
 {
-    public TMP_Dropdown typeDropdown;
-    public TMP_Dropdown weaponDropdown;
+    [SerializeField] TMP_Dropdown typeDropdown;
+    [SerializeField] TMP_Dropdown weaponDropdown;
 
-    public Image gunImage;   
-    public Sprite mortar;
-    public Sprite collie_mht;
-    public Sprite warden_mt;
-    public Sprite collie_gb;
-    public Sprite warden_gb;
-    public Sprite warden_gb2;
-    public Sprite collie_120;
-    public Sprite warden_120;
-    public Sprite collie_150;
-    public Sprite warden_150;
-    public Sprite sc;
-    public Sprite rail_sc;
-    public Sprite collie_rockettankette;
-    public Sprite collie_rockettruck;
-    public Sprite collie_rocketbatt;
-    public Sprite warden_rockettank;
-    public Sprite warden_rocketpush;
-    public Sprite warden_rocketht;
+    // the image GameObject itself the sprites are loaded into
+    [SerializeField] Image gunImage; 
+    
+    // the separate icons (private but editor accessible)
+    [SerializeField] Sprite normal_mortar;
+    [SerializeField] Sprite collie_mht;
+    [SerializeField] Sprite warden_mtank;
+    [SerializeField] Sprite collie_gb;
+    [SerializeField] Sprite warden_gb;
+    [SerializeField] Sprite warden_gb2;
+    [SerializeField] Sprite collie_120;
+    [SerializeField] Sprite warden_120;
+    [SerializeField] Sprite collie_150;
+    [SerializeField] Sprite warden_150;
+    [SerializeField] Sprite stormcannon;
+    [SerializeField] Sprite rail_sc;
+    [SerializeField] Sprite collie_rockettankette;
+    [SerializeField] Sprite collie_rockettruck;
+    [SerializeField] Sprite collie_rocketbattery;
+    [SerializeField] Sprite warden_rockettank;
+    [SerializeField] Sprite warden_rocketpush;
+    [SerializeField] Sprite warden_rocketht;
 
-
+    // accessible outputs to other methods
     public int gunType;
     public int gun;
+    public float minRange;
+    public float maxRange;
 
     void Awake()
     {
         gunType = 0;
         gun = 0;
+        minRange = 0f;
+        maxRange = 0f;
     }
 
     public void populate_gunmodels()
@@ -110,13 +117,19 @@ public class DropdownController : MonoBehaviour
                 switch(gun)
                 {
                     case 1:
-                        gunImage.GetComponent<Image>().sprite = mortar;
+                        gunImage.GetComponent<Image>().sprite = normal_mortar;
+                        minRange = 45f;
+                        maxRange = 80f;
                         break;
                     case 2:
                         gunImage.GetComponent<Image>().sprite = collie_mht;
+                        minRange = 45f;
+                        maxRange = 80f;
                         break;
                     case 3:
-                        gunImage.GetComponent<Image>().sprite = warden_mt;
+                        gunImage.GetComponent<Image>().sprite = warden_mtank;
+                        minRange = 45f;
+                        maxRange = 80f;
                         break;
                 }
                 break;
@@ -126,12 +139,18 @@ public class DropdownController : MonoBehaviour
                 {
                     case 1:
                         gunImage.GetComponent<Image>().sprite = collie_gb;
+                        minRange = 50f;
+                        maxRange = 100f;
                         break;
                     case 2:
                         gunImage.GetComponent<Image>().sprite = warden_gb;
+                        minRange = 50f;
+                        maxRange = 100f;
                         break;
                     case 3:
                         gunImage.GetComponent<Image>().sprite = warden_gb2;
+                        minRange = 50f;
+                        maxRange = 100f;
                         break;
                 }
                 break;
@@ -141,9 +160,13 @@ public class DropdownController : MonoBehaviour
                 {
                     case 1:
                         gunImage.GetComponent<Image>().sprite = collie_120;
+                        minRange = 100f;
+                        maxRange = 250f;
                         break;
                     case 2:
                         gunImage.GetComponent<Image>().sprite = warden_120;
+                        minRange = 100f;
+                        maxRange = 300f;
                         break;
                 }
                 break;
@@ -153,9 +176,13 @@ public class DropdownController : MonoBehaviour
                 {
                     case 1:
                         gunImage.GetComponent<Image>().sprite = collie_150;
+                        minRange = 200f;
+                        maxRange = 350f;
                         break;
                     case 2:
                         gunImage.GetComponent<Image>().sprite = warden_150;
+                        minRange = 100f;
+                        maxRange = 300f;
                         break;
                 }
                 break;
@@ -164,10 +191,14 @@ public class DropdownController : MonoBehaviour
                 switch (gun)
                 {
                     case 1:
-                        gunImage.GetComponent<Image>().sprite = sc;
+                        gunImage.GetComponent<Image>().sprite = stormcannon;
+                        minRange = 400f;
+                        maxRange = 1000f;
                         break;
                     case 2:
                         gunImage.GetComponent<Image>().sprite = rail_sc;
+                        minRange = 350f;
+                        maxRange = 500f;
                         break;
                 }
                 break;
@@ -177,21 +208,33 @@ public class DropdownController : MonoBehaviour
                 {
                     case 1:
                         gunImage.GetComponent<Image>().sprite = collie_rockettankette;
+                        minRange = 225f;
+                        maxRange = 400f;
                         break;
                     case 2:
                         gunImage.GetComponent<Image>().sprite = collie_rockettruck;
+                        minRange = 225f;
+                        maxRange = 500f;
                         break;
                     case 3:
-                        gunImage.GetComponent<Image>().sprite = collie_rocketbatt;
+                        gunImage.GetComponent<Image>().sprite = collie_rocketbattery;
+                        minRange = 200f;
+                        maxRange = 425f;
                         break;
                     case 4:
                         gunImage.GetComponent<Image>().sprite = warden_rockettank;
+                        minRange = 225f;
+                        maxRange = 475f;
                         break;
                     case 5:
                         gunImage.GetComponent<Image>().sprite = warden_rocketpush;
+                        minRange = 225f;
+                        maxRange = 450f;
                         break;
                     case 6:
                         gunImage.GetComponent<Image>().sprite = warden_rocketht;
+                        minRange = 200f;
+                        maxRange = 225f;
                         break;
                 }
                 break;
@@ -203,6 +246,8 @@ public class DropdownController : MonoBehaviour
     {
         gunType = 0;
         gun = 0;
+        minRange = 0f;
+        maxRange = 0f;
         typeDropdown.value = 0;
 
         // clear any previous dropdown items      
