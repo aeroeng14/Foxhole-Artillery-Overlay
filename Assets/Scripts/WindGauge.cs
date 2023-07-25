@@ -12,42 +12,42 @@ public class WindGauge : MonoBehaviour
     [SerializeField] GameObject wind_gauge;
 
     // accessed by calculate_aimpoint() in CalculateAiming.cs
-    public int wind_count;
+    public int wind_strength;
     public float wind_direction;
 
     void Awake()
     {
-        wind_count = 1;
-        wind_direction = 0.0f;
+        wind_strength = 1;// minimum wind value
+        wind_direction = 0.0f; // due N to start with
     }
 
     public void increment_wind()
     {
         // turn the various scaled images on and off depending on the current wind tier
-        switch (wind_count)
+        switch (wind_strength)
         {
             case 1: // always start with T1 wind active in the UI
-                wind_count ++;
+                wind_strength++;
                 wind_t1.SetActive(false);
                 wind_t2.SetActive(true);
                 break;
             case 2:
-                wind_count++;
+                wind_strength++;
                 wind_t2.SetActive(false);
                 wind_t3.SetActive(true);
                 break;
             case 3:
-                wind_count++;
+                wind_strength++;
                 wind_t3.SetActive(false);
                 wind_t4.SetActive(true);
                 break;
             case 4:
-                wind_count++;
+                wind_strength++;
                 wind_t4.SetActive(false);
                 wind_t5.SetActive(true);
                 break;
             case 5: // cycle back to T1 and begin again
-                wind_count = 1;
+                wind_strength = 1;
                 wind_t5.SetActive(false);
                 wind_t1.SetActive(true);
                 break;
@@ -85,7 +85,7 @@ public class WindGauge : MonoBehaviour
         wind_gauge.GetComponent<RectTransform>().Rotate(new Vector3(0, 0, -current_rotation[2]));
 
         // reset the wind tiers
-        wind_count = 1;
+        wind_strength = 1;
         wind_t1.SetActive(true);
         wind_t2.SetActive(false);
         wind_t3.SetActive(false);

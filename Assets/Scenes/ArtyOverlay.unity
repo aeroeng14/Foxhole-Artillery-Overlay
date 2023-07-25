@@ -262,7 +262,7 @@ GameObject:
   - component: {fileID: 74929267}
   - component: {fileID: 74929266}
   m_Layer: 5
-  m_Name: GunMarkerImage
+  m_Name: GunMarkerIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3346,9 +3346,9 @@ MonoBehaviour:
   typeDropdown: {fileID: 83218915}
   weaponDropdown: {fileID: 1857900882}
   gunImage: {fileID: 136385857}
-  mortar: {fileID: 21300000, guid: 5733f7c7732b96d4792c6ace9d22f7a7, type: 3}
+  normal_mortar: {fileID: 21300000, guid: 5733f7c7732b96d4792c6ace9d22f7a7, type: 3}
   collie_mht: {fileID: 21300000, guid: 7da5f9e18e66df941a5ac2b8d241836d, type: 3}
-  warden_mt: {fileID: 21300000, guid: 969bd835c0991d841b2fa0a7a379c2e9, type: 3}
+  warden_mtank: {fileID: 21300000, guid: 969bd835c0991d841b2fa0a7a379c2e9, type: 3}
   collie_gb: {fileID: 21300000, guid: 4c48f8a628f561d458b32bb7bc6274ee, type: 3}
   warden_gb: {fileID: 21300000, guid: 80fb97726d5873a4dbe8901afe31b52d, type: 3}
   warden_gb2: {fileID: 21300000, guid: c9bf2fa7051a86246bf502c1464e5177, type: 3}
@@ -3356,16 +3356,18 @@ MonoBehaviour:
   warden_120: {fileID: 21300000, guid: 8a05fa6b24528524795844510d9e2560, type: 3}
   collie_150: {fileID: 21300000, guid: 17a2888ca84e448498ae6c5f70ab208a, type: 3}
   warden_150: {fileID: 21300000, guid: 44da1b366835a0b45b188ba9c0d0799a, type: 3}
-  sc: {fileID: 21300000, guid: af5b4037425987341ae3217c4ea45212, type: 3}
+  stormcannon: {fileID: 21300000, guid: af5b4037425987341ae3217c4ea45212, type: 3}
   rail_sc: {fileID: 21300000, guid: 48fcd08f274934945b3efab6a43b7522, type: 3}
   collie_rockettankette: {fileID: 21300000, guid: c023449e9e0196a448b15f1225cba6d7, type: 3}
   collie_rockettruck: {fileID: 21300000, guid: 135620c053f224c4c86937d2fb4fbab5, type: 3}
-  collie_rocketbatt: {fileID: 21300000, guid: 0bf1f3eb2999a7642abe9f8d65415227, type: 3}
+  collie_rocketbattery: {fileID: 21300000, guid: 0bf1f3eb2999a7642abe9f8d65415227, type: 3}
   warden_rockettank: {fileID: 21300000, guid: 79857770a6454a142aa8b012081fbd5f, type: 3}
   warden_rocketpush: {fileID: 21300000, guid: 2c8a74a9a0405704b97f00800f991f68, type: 3}
   warden_rocketht: {fileID: 21300000, guid: d8b6a95768387624cb083030d1b92309, type: 3}
   gunType: 0
   gun: 0
+  minRange: 0
+  maxRange: 0
 --- !u!1 &965840678
 GameObject:
   m_ObjectHideFlags: 0
@@ -3518,11 +3520,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f5108b53b625c44a8cf06fafb9d682b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gunMarker: {fileID: 74929264}
-  targetMarker: {fileID: 1980479199}
-  AimLinePanel: {fileID: 1426400336}
-  gridMarker: {fileID: 1760671244}
-  scaleslider: {fileID: 1609789255}
+  GameWindowCanvas: {fileID: 1867918672}
+  OptionsPanelCanvas: {fileID: 951707077}
   WindCanvas: {fileID: 1253480949}
   text_panel: {fileID: 586895407}
 --- !u!1 &1018891244
@@ -4044,7 +4043,7 @@ MonoBehaviour:
   wind_t4: {fileID: 1542185240}
   wind_t5: {fileID: 1303120204}
   wind_gauge: {fileID: 731540058}
-  wind_count: 0
+  wind_strength: 0
   wind_direction: 0
 --- !u!1 &1284470610
 GameObject:
@@ -5362,7 +5361,7 @@ GameObject:
   - component: {fileID: 1760671250}
   - component: {fileID: 1760671248}
   m_Layer: 5
-  m_Name: GridMarkerImage
+  m_Name: GridMarkerIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5478,7 +5477,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 987394833}
           m_TargetAssemblyTypeName: CalculateAiming, Assembly-CSharp
-          m_MethodName: get_scale
+          m_MethodName: calculate_aimpoint
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -5514,7 +5513,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scaleSlider: {fileID: 1609789255}
-  supportpanel: {fileID: 987394828}
+  GameWindowCanvas: {fileID: 1867918672}
 --- !u!1 &1845440268
 GameObject:
   m_ObjectHideFlags: 0
@@ -5808,6 +5807,7 @@ GameObject:
   - component: {fileID: 1867918675}
   - component: {fileID: 1867918674}
   - component: {fileID: 1867918673}
+  - component: {fileID: 1867918677}
   m_Layer: 5
   m_Name: GameWindowCanvas
   m_TagString: Untagged
@@ -5900,6 +5900,22 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1867918677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1867918672}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b01dac234b9077f49888707be926b409, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gunMarker: {fileID: 74929264}
+  targetMarker: {fileID: 1980479199}
+  gridMarker: {fileID: 1760671244}
+  aimLine: {fileID: 1426400336}
 --- !u!1 &1926773094
 GameObject:
   m_ObjectHideFlags: 0
@@ -6064,7 +6080,7 @@ GameObject:
   - component: {fileID: 1980479202}
   - component: {fileID: 1980479201}
   m_Layer: 5
-  m_Name: TargetMarkerImage
+  m_Name: TargetMarkerIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6618,11 +6634,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a65ede5601cb2e84b8b9b93f892ac097, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GameWindowCanvas: {fileID: 1867918675}
+  GameWindowCanvas: {fileID: 1867918672}
   MainMenuPanel: {fileID: 466156298}
   OptionsMenuPanel: {fileID: 524971272}
+  OptionsMenuCanvas: {fileID: 951707077}
   SupportingCanvas: {fileID: 987394828}
-  gridMarker: {fileID: 1760671244}
-  gunMarker: {fileID: 74929264}
-  targetMarker: {fileID: 1980479199}
-  aimingLine: {fileID: 1426400336}
