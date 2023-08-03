@@ -42,6 +42,7 @@ public class CalculateAiming : MonoBehaviour
         float azimuth_deg, distance_mag_pixels, distance_mag_m, wind_offset_mag, min_Range, max_Range;
         Quaternion wind_angle_rotation;
         int gun_type;
+		int gun_platform;
 
         MarkerLocations marker_class = GameWindowCanvas.GetComponent<MarkerLocations>();
 
@@ -70,7 +71,8 @@ public class CalculateAiming : MonoBehaviour
 
             // get the raw wind offset distance depending on the type of gun (120 vs 150, etc.)
             gun_type = OptionsPanelCanvas.GetComponent<DropdownController>().gunType;
-            wind_offset_mag = calc_wind_offset(gun_type, wind_tier);
+			gun_platform = OptionsPanelCanvas.GetComponent<DropdownController>().gun;
+            wind_offset_mag = calc_wind_offset(gun_type, gun_platform, wind_tier);
 
             // decompose the wind direction into vector components so we can add it easily
             wind_angle_rotation = Quaternion.Euler(0, 0, -wind_direction_deg); // the unit vector
@@ -161,13 +163,13 @@ public class CalculateAiming : MonoBehaviour
         marker_class.set_aimline_open(true);
     }
     
-    float calc_wind_offset(int gun_type, int wind_tier)
+    float calc_wind_offset(int gun_type, int gun_platform, int wind_tier)
     {
         float wind_offset_mag = 0.0f; // initialize with
 
         // insert equations/constants below for each wind tier once I know them in the future for
         // each arty type
-        switch (gun_type)
+		switch (gun_type)
         {
             case 0: // no gun_type selected and independent of wind
                 wind_offset_mag = 0.0f;
@@ -196,79 +198,169 @@ public class CalculateAiming : MonoBehaviour
                 switch (wind_tier)
                 {
                     case 1:
-                        wind_offset_mag = 10.0f;
+                        wind_offset_mag = 0.0f;
                         break;
                     case 2:
-                        wind_offset_mag = 20.0f;
+                        wind_offset_mag = 0.0f;
                         break;
                     case 3:
-                        wind_offset_mag = 30.0f;
+                        wind_offset_mag = 0.0f;
                         break;
                     case 4:
-                        wind_offset_mag = 40.0f;
+                        wind_offset_mag = 0.0f;
                         break;
                     case 5:
-                        wind_offset_mag = 50.0f;
+                        wind_offset_mag = 0.0f;
                         break;
                 }
                 break;
-            case 3: // 120mm
+            case 3: // 120mm (1: collie 120, 2: warden 120)
                 switch (wind_tier)
                 {
                     case 1:
-                        wind_offset_mag = 25.0f;
-                        break;
+                        switch (gun_platform)
+						{
+							case 1:
+								wind_offset_mag = 12.0f;
+								break;
+						
+							case 2:
+								wind_offset_mag = 15.0f;
+								break;
+						}
+						break;
                     case 2:
-                        wind_offset_mag = 50.0f;
-                        break;
+                        switch (gun_platform)
+						{
+							case 1:
+								wind_offset_mag = 24.0f;
+								break;
+						
+							case 2:
+								wind_offset_mag = 30.0f;
+								break;
+						}
+						break;
                     case 3:
-                        wind_offset_mag = 75.0f;
-                        break;
+                        switch (gun_platform)
+						{
+							case 1:
+								wind_offset_mag = 36.0f;
+								break;
+						
+							case 2:
+								wind_offset_mag = 45.0f;
+								break;
+						}
+						break;
                     case 4:
-                        wind_offset_mag = 100.0f;
-                        break;
+                        switch (gun_platform)
+						{
+							case 1:
+								wind_offset_mag = 48.0f;
+								break;
+						
+							case 2:
+								wind_offset_mag = 60.0f;
+								break;
+						}
+						break;
                     case 5:
-                        wind_offset_mag = 125.0f;
-                        break;
+                        switch (gun_platform)
+						{
+							case 1:
+								wind_offset_mag = 60.0f;
+								break;
+						
+							case 2:
+								wind_offset_mag = 75.0f;
+								break;
+						}
+						break;
                 }
                 break;
-            case 4: // 150mm
+            case 4: // 150mm (1: collie 150, 2: warden 150)
                 switch (wind_tier)
                 {
                     case 1:
-                        wind_offset_mag = 25.0f;
-                        break;
+                        switch (gun_platform)
+						{
+							case 1:
+								wind_offset_mag = 18.0f;
+								break;
+						
+							case 2:
+								wind_offset_mag = 15.0f;
+								break;
+						}
+						break;
                     case 2:
-                        wind_offset_mag = 50.0f;
-                        break;
+                        switch (gun_platform)
+						{
+							case 1:
+								wind_offset_mag = 36.0f;
+								break;
+						
+							case 2:
+								wind_offset_mag = 30.0f;
+								break;
+						}
+						break;
                     case 3:
-                        wind_offset_mag = 75.0f;
-                        break;
+                        switch (gun_platform)
+						{
+							case 1:
+								wind_offset_mag = 54.0f;
+								break;
+						
+							case 2:
+								wind_offset_mag = 45.0f;
+								break;
+						}
+						break;
                     case 4:
-                        wind_offset_mag = 100.0f;
-                        break;
+                        switch (gun_platform)
+						{
+							case 1:
+								wind_offset_mag = 72.0f;
+								break;
+						
+							case 2:
+								wind_offset_mag = 60.0f;
+								break;
+						}
+						break;
                     case 5:
-                        wind_offset_mag = 125.0f;
-                        break;
+                        switch (gun_platform)
+						{
+							case 1:
+								wind_offset_mag = 90.0f;
+								break;
+						
+							case 2:
+								wind_offset_mag = 75.0f;
+								break;
+						}
+						break;
                 }
                 break;
             case 5: // 300mm
                 switch (wind_tier)
                 {
                     case 1:
-                        wind_offset_mag = 50.0f;
+                        wind_offset_mag = 0.0f;
                         break;
                     case 2:
-                        wind_offset_mag = 100.0f;
+                        wind_offset_mag = 0.0f;
                         break;
                     case 3:
-                        wind_offset_mag = 150.0f;
+                        wind_offset_mag = 0.0f;
                         break;
                     case 4:
-                        wind_offset_mag = 200.0f;
+                        wind_offset_mag = 0.0f;
                         break;
                     case 5:
-                        wind_offset_mag = 250.0f;
+                        wind_offset_mag = 0.0f;
                         break;
                 }
                 break;
@@ -293,6 +385,8 @@ public class CalculateAiming : MonoBehaviour
                 }
                 break;
         }
+
+        Debug.Log("Offset: " + wind_offset_mag);
 
         return wind_offset_mag;
     }
