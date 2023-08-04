@@ -38,8 +38,8 @@ public class CalculateAiming : MonoBehaviour
 
     public void calculate_aimpoint()
     {
-        Vector3 gun_position, target_position, gun_target_vector, wind_vector, aim_here_vector;
-        float azimuth_deg, distance_mag_pixels, distance_mag_m, wind_offset_mag, min_Range, max_Range;
+        Vector3 gun_position, target_position, gun_target_vector_pixels, wind_vector_meters, aim_here_vector_meters;
+        float azimuth_deg, distance_mag_meters, distance_mag_m, wind_offset_mag_meters, min_Range, max_Range;
         Quaternion wind_angle_rotation;
         int gun_type;
 		int gun_platform;
@@ -57,10 +57,13 @@ public class CalculateAiming : MonoBehaviour
             target_position = marker_class.get_target_marker_position();
 
             // find distance between them as a vector
-            gun_target_vector = target_position - gun_position;
+            gun_target_vector_pixels = target_position - gun_position;
 
             // draw the line between the marker icons for visual aid
-            if (gun_position != target_position) { draw_projectile_line(gun_target_vector, gun_position, target_position); }
+            if (gun_position != target_position) { draw_projectile_line(gun_target_vector_pixels, gun_position, target_position); }
+
+            // convert the distance in pixel to in-game meters
+            pixel_scale = GameWindowCanvas.GetComponent<MarkerLocations>().get_grid_marker_scale();
 
             //
             // add in the wind offset to the target location based on what gun type is firing
@@ -72,13 +75,24 @@ public class CalculateAiming : MonoBehaviour
             // get the raw wind offset distance depending on the type of gun (120 vs 150, etc.)
             gun_type = OptionsPanelCanvas.GetComponent<DropdownController>().gunType;
 			gun_platform = OptionsPanelCanvas.GetComponent<DropdownController>().gun;
-            wind_offset_mag = calc_wind_offset(gun_type, gun_platform, wind_tier);
+            wind_offset_mag_meters = calc_wind_offset(gun_type, gun_platform, wind_tier);
 
             // decompose the wind direction into vector components so we can add it easily
             wind_angle_rotation = Quaternion.Euler(0, 0, -wind_direction_deg); // the unit vector
-            wind_vector = wind_angle_rotation * new Vector3(0,1,0) * wind_offset_mag;// multiplied by the offset from above
+            wind_vector_meters = wind_angle_rotation * new Vector3(0,1,0) * wind_offset_mag_meters;// multiplied by the offset from above
 
-            aim_here_vector = gun_target_vector + -wind_vector;
+            // includes wind
+            aim_here_vector_meters = gun_target_vector_pixels*pixel_scale + -wind_vector_meters;
+
+            // calculate the distance along the new aiming vector
+            distance_mag_meters = Mathf.Round(aim_here_vector_meters.magnitude);
+
+            // calculate the azimuth between the aiming line and due N (Up in the canvas)
+            azimuth_deg = Vector3.SignedAngle(aim_here_vector_meters, transform.up, new Vector3(0, 0, 1));
+            if (azimuth_deg < 0) { azimuth_deg += 360.0f; }
+
+            azimuth_deg = Mathf.Round(azimuth_deg * 10.0f) / 10.0f;// X.Xdeg format
+
 
             // ----
             //Debug.Log("Pixel Wind X: " + wind_vector.x + " Pixel Wind Y: " + wind_vector.y);
@@ -87,37 +101,25 @@ public class CalculateAiming : MonoBehaviour
             // ----
             // ----------------------------------------------------------------------------------------
 
-            // calculate the distance along the new aiming vector
-            distance_mag_pixels = aim_here_vector.magnitude;
-
-            // calculate the azimuth between the aiming line and due N (Up in the canvas)
-            azimuth_deg = Vector3.SignedAngle(aim_here_vector, transform.up, new Vector3(0, 0, 1));
-            if (azimuth_deg < 0) { azimuth_deg += 360.0f; }
         }
         else 
         {
             // output zeros since there is no difference to calculate if all three are not on screen
             azimuth_deg = 0.0f; 
-            distance_mag_pixels = 0.0f;
+            distance_mag_meters = 0.0f;
         } 
-        
-        // convert the distance in pixel to in-game meters
-        pixel_scale = GameWindowCanvas.GetComponent<MarkerLocations>().get_grid_marker_scale();
-
-        distance_mag_m = Mathf.Round(distance_mag_pixels * pixel_scale);
-        azimuth_deg = Mathf.Round(azimuth_deg * 10.0f) / 10.0f;// X.Xdeg format
 
         // print the results to the text box
-        text_panel.text = "Azimuth: " + azimuth_deg + " deg         Distance: " + distance_mag_m + "m";
+        text_panel.text = "Azimuth: " + azimuth_deg + " deg         Distance: " + distance_mag_meters + "m";
 
         // color the AimingPanel if in range or not if a gun has been selected in the options drop down menus
         Image aimingPanel = GetComponentInChildren<Image>();
-        if (OptionsPanelCanvas.GetComponent<DropdownController>().gun != 0 && distance_mag_m > 0f)
+        if (OptionsPanelCanvas.GetComponent<DropdownController>().gun != 0 && distance_mag_meters > 0f)
         {
             min_Range = OptionsPanelCanvas.GetComponent<DropdownController>().minRange;
             max_Range = OptionsPanelCanvas.GetComponent<DropdownController>().maxRange;
 
-            if (distance_mag_m >= min_Range && distance_mag_m <= max_Range)
+            if (distance_mag_meters >= min_Range && distance_mag_meters <= max_Range)
             {
                 aimingPanel.color = Color.green;
                 //aimingPanel.color = new Color(0f,1f,0f,0.5f);
@@ -344,23 +346,68 @@ public class CalculateAiming : MonoBehaviour
 						break;
                 }
                 break;
-            case 5: // 300mm
+            case 5: // 300mm (1: storm cannon, 2: rail storm cannon)
                 switch (wind_tier)
                 {
                     case 1:
-                        wind_offset_mag = 0.0f;
+                        switch (gun_platform)
+                        {
+                            case 1:
+                                wind_offset_mag = 60.0f;
+                                break;
+
+                            case 2:
+                                wind_offset_mag = 25.0f;
+                                break;
+                        }
                         break;
                     case 2:
-                        wind_offset_mag = 0.0f;
+                        switch (gun_platform)
+                        {
+                            case 1:
+                                wind_offset_mag = 120.0f;
+                                break;
+
+                            case 2:
+                                wind_offset_mag = 50.0f;
+                                break;
+                        }
                         break;
                     case 3:
-                        wind_offset_mag = 0.0f;
+                        switch (gun_platform)
+                        {
+                            case 1:
+                                wind_offset_mag = 180.0f;
+                                break;
+
+                            case 2:
+                                wind_offset_mag = 75.0f;
+                                break;
+                        }
                         break;
                     case 4:
-                        wind_offset_mag = 0.0f;
+                        switch (gun_platform)
+                        {
+                            case 1:
+                                wind_offset_mag = 240.0f;
+                                break;
+
+                            case 2:
+                                wind_offset_mag = 100.0f;
+                                break;
+                        }
                         break;
                     case 5:
-                        wind_offset_mag = 0.0f;
+                        switch (gun_platform)
+                        {
+                            case 1:
+                                wind_offset_mag = 300.0f;
+                                break;
+
+                            case 2:
+                                wind_offset_mag = 125.0f;
+                                break;
+                        }
                         break;
                 }
                 break;
