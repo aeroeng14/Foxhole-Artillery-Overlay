@@ -433,7 +433,6 @@ public class CalculateAiming : MonoBehaviour
                 break;
         }
 
-        Debug.Log("Offset: " + wind_offset_mag);
 
         return wind_offset_mag;
     }
