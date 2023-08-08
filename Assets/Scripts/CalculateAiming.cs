@@ -39,7 +39,7 @@ public class CalculateAiming : MonoBehaviour
     public void calculate_aimpoint()
     {
         Vector3 gun_position, target_position, gun_target_vector_pixels, wind_vector_meters, aim_here_vector_meters;
-        float azimuth_deg, distance_mag_meters, distance_mag_m, wind_offset_mag_meters, min_Range, max_Range;
+        float azimuth_deg, distance_mag_meters, wind_offset_mag_meters, min_Range, max_Range;
         Quaternion wind_angle_rotation;
         int gun_type;
 		int gun_platform;
@@ -95,12 +95,10 @@ public class CalculateAiming : MonoBehaviour
 
 
             // ----
-            //Debug.Log("Pixel Wind X: " + wind_vector.x + " Pixel Wind Y: " + wind_vector.y);
-            //Debug.Log("Pixel Gun-Target Line Only X: " + gun_target_vector.x + " Pixel Gun-Target Line Only Y: " + gun_target_vector.y);
-            //Debug.Log("Pixel Where to Aim w/wind X: " + aim_here_vector.x + " Pixel Where to Aim w/wind Y: " + aim_here_vector.y);
+            //Debug.Log("Pixel Wind X: " + wind_vector_meters.x + " Pixel Wind Y: " + wind_vector_meters.y);
+            //Debug.Log("Pixel Gun-Target Line Only X: " + gun_target_vector_pixels.x*pixel_scale + " Pixel Gun-Target Line Only Y: " + gun_target_vector_pixels.y*pixel_scale);
+            //Debug.Log("Pixel Where to Aim w/wind X: " + aim_here_vector_meters.x + " Pixel Where to Aim w/wind Y: " + aim_here_vector_meters.y);
             // ----
-            // ----------------------------------------------------------------------------------------
-
         }
         else 
         {
