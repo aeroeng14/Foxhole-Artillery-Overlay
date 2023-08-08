@@ -2906,10 +2906,10 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: "This is the Foxhole Artillery Overlay (Project BARB); Author: 22-CSO Justin;
-    v1.0 \r\n\r\nFor more details please visit the GitHub repository ( ) for a proper
-    wiki.\r\n\r\nHow to Use:\r\n1. Click the gray gun icon to expand the rest of
-    the menus. \r\n    (Clicking again will reset all settings and minimize to play
-    the game.)\r\n\r\n2. (Optional) Click the gear icon and select your platform.
+    v1.0 \r\n\r\nFor more details please visit the GitHub repository (https://github.com/aeroeng14/Foxhole-Artillery-Overlay/wiki
+    ) for a proper wiki.\r\n\r\nHow to Use:\r\n1. Click the gray gun icon to expand
+    the rest of the menus. \r\n    (Clicking again will reset all settings and minimize
+    to play the game.)\r\n\r\n2. (Optional) Click the gear icon and select your platform.
     This adds min/max range colors as well as wind offsets into \r\n    the calculations.
     If you don't select anything (or reset to default), wind is not factored in.
     Wind direction is changed \r\n    via dragging the orange arrow. Wind strength
@@ -4669,7 +4669,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 202, y: -85}
-  m_SizeDelta: {x: 753.752, y: 482.1349}
+  m_SizeDelta: {x: 753.752, y: 495.21}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1371663924
 MonoBehaviour:
