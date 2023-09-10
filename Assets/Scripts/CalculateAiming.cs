@@ -11,6 +11,7 @@ public class CalculateAiming : MonoBehaviour
     [SerializeField] GameObject GameWindowCanvas;
     [SerializeField] GameObject OptionsPanelCanvas;
     [SerializeField] GameObject WindCanvas;
+    [SerializeField] GameObject dispersion_circle;
 
     public TMP_Text text_panel;
 
@@ -39,7 +40,7 @@ public class CalculateAiming : MonoBehaviour
     public void calculate_aimpoint()
     {
         Vector3 gun_position, target_position, gun_target_vector_pixels, wind_vector_meters, aim_here_vector_meters;
-        float azimuth_deg, distance_mag_meters, wind_offset_mag_meters, min_Range, max_Range;
+        float azimuth_deg, distance_mag_meters, wind_offset_mag_meters, min_Range, max_Range, dispersion_m, desired_disp_circle_size_pixel;
         Quaternion wind_angle_rotation;
         int gun_type;
 		int gun_platform;
@@ -64,6 +65,16 @@ public class CalculateAiming : MonoBehaviour
 
             // convert the distance in pixel to in-game meters
             pixel_scale = GameWindowCanvas.GetComponent<MarkerLocations>().get_grid_marker_scale();
+
+            // get the dispersion for a platform in meters
+            dispersion_m = OptionsPanelCanvas.GetComponent<DropdownController>().dispersion;
+
+            // scale the dispersion circle based on the pixel_scale (if changed)
+            if (dispersion_m != 0.0f)
+            {
+                desired_disp_circle_size_pixel = dispersion_m / pixel_scale;
+                dispersion_circle.GetComponent<RectTransform>().sizeDelta = new Vector2(desired_disp_circle_size_pixel, desired_disp_circle_size_pixel);
+            }
 
             //
             // add in the wind offset to the target location based on what gun type is firing
@@ -100,6 +111,25 @@ public class CalculateAiming : MonoBehaviour
             //Debug.Log("Pixel Where to Aim w/wind X: " + aim_here_vector_meters.x + " Pixel Where to Aim w/wind Y: " + aim_here_vector_meters.y);
             // ----
         }
+        else if (marker_class.is_grid_marker_open() && marker_class.is_target_marker_open())
+        {
+            // convert the distance in pixel to in-game meters
+            pixel_scale = GameWindowCanvas.GetComponent<MarkerLocations>().get_grid_marker_scale();
+
+            // get the dispersion for a platform in meters
+            dispersion_m = OptionsPanelCanvas.GetComponent<DropdownController>().dispersion;
+
+            // scale the dispersion circle based on the pixel_scale (if changed)
+            if (dispersion_m != 0.0f)
+            {
+                desired_disp_circle_size_pixel = dispersion_m / pixel_scale;
+                dispersion_circle.GetComponent<RectTransform>().sizeDelta = new Vector2(desired_disp_circle_size_pixel, desired_disp_circle_size_pixel);
+            }
+
+            // output zeros since there is no difference to calculate if all three are not on screen
+            azimuth_deg = 0.0f;
+            distance_mag_meters = 0.0f;
+        }
         else 
         {
             // output zeros since there is no difference to calculate if all three are not on screen
@@ -127,8 +157,6 @@ public class CalculateAiming : MonoBehaviour
                 aimingPanel.color = Color.red;
                 //aimingPanel.color = new Color(1f,0f,0f,0.5f);
             }
-
-
         }
         else
         {

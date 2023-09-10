@@ -11,6 +11,7 @@ public class MarkerLocations : MonoBehaviour
     [SerializeField] GameObject targetMarker;
     [SerializeField] GameObject gridMarker;
     [SerializeField] GameObject aimLine;
+    [SerializeField] GameObject dispersion_circle;
 
     //
     // Gets attributes of the marker icons and sets them to the global variables above for access by other methods
@@ -23,6 +24,11 @@ public class MarkerLocations : MonoBehaviour
     public Vector3 get_target_marker_position()
     {
         return targetMarker.transform.position;
+    }
+
+    public Vector3 get_dispersion_marker_position()
+    {
+        return dispersion_circle.transform.position;
     }
 
     public Vector3 get_aimline_position()
@@ -60,14 +66,24 @@ public class MarkerLocations : MonoBehaviour
         targetMarker.transform.localPosition = position;
     }
 
+    public void set_dispersion_marker_position(Vector3 position)
+    {
+        dispersion_circle.transform.localPosition = position;
+    }
+
+    public void set_dispersion_marker_scale(Vector2 scale)
+    {
+        dispersion_circle.GetComponent<RectTransform>().sizeDelta = scale;
+    }
+
     public void set_grid_marker_position(Vector3 position)
     {
         gridMarker.transform.localPosition = position;
     }
 
-    public void set_grid_marker_scale(Vector3 scale)
+    public void set_grid_marker_scale(Vector2 scale)
     {
-        gridMarker.transform.localScale = scale;
+        gridMarker.GetComponent<RectTransform>().sizeDelta = scale;
     }
 
     public void set_aimline_position(Vector3 position)
@@ -114,6 +130,11 @@ public class MarkerLocations : MonoBehaviour
     public void set_target_marker_open(bool flag)
     {
         targetMarker.SetActive(flag);
+    }
+
+    public void set_dispersion_marker_open(bool flag)
+    {
+        dispersion_circle.SetActive(flag);
     }
 
     public void set_grid_marker_open(bool flag)
