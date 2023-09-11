@@ -18,5 +18,9 @@ public class MoveUIObject : MonoBehaviour
     public void MoveObject()
     {
         rectTransform.position = Input.mousePosition + position_offset_from_mouse;
+
+        // flag if the icon has ever been moved from its starting location
+        if(this.gameObject.name == "GunMarkerIcon"){GameObject.Find("GameWindowCanvas").GetComponent<MarkerLocations>().isMoved_gun = true;}
+        else {GameObject.Find("GameWindowCanvas").GetComponent<MarkerLocations>().isMoved_grid = true;}
     }
 }

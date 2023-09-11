@@ -120,6 +120,10 @@ public class DropdownController : MonoBehaviour
         // change the image sprite
         switch (gunType)
         {
+            case 0: // None (default)
+                dispersion = 0f; // reset this value if you switch from anything else back to distance only
+                break;
+
             case 1: // mortars
                 switch (gun)
                 {

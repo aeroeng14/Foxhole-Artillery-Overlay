@@ -21,5 +21,8 @@ public class MoveUIObjectTarget : MonoBehaviour
         rectTransform.position = Input.mousePosition + position_offset_from_mouse;
         dispersion_rectTransform.position = Input.mousePosition + position_offset_from_mouse; // add in the dispersion circle too since I want the movement parented
                                                                                               // but cannot make it a child otherwise it renders on top of the marker
+
+        // flag if the icon has ever been moved from its starting location
+        GameObject.Find("GameWindowCanvas").GetComponent<MarkerLocations>().isMoved_target = true;
     }
 }

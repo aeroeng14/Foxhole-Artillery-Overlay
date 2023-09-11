@@ -13,8 +13,18 @@ public class MarkerLocations : MonoBehaviour
     [SerializeField] GameObject aimLine;
     [SerializeField] GameObject dispersion_circle;
 
+    // global variables checking if the icon has ever been moved or not from its original position on the canvas
+    public bool isMoved_gun, isMoved_target, isMoved_grid;
+
+    private void Start()
+    {
+        isMoved_grid = false;
+        isMoved_gun = false;
+        isMoved_target = false;
+    }
+
     //
-    // Gets attributes of the marker icons and sets them to the global variables above for access by other methods
+    // Gets attributes of the marker icons for access by other class methods
     //
     public Vector3 get_gun_marker_position()
     {
@@ -71,24 +81,24 @@ public class MarkerLocations : MonoBehaviour
         dispersion_circle.transform.localPosition = position;
     }
 
-    public void set_dispersion_marker_scale(Vector2 scale)
-    {
-        dispersion_circle.GetComponent<RectTransform>().sizeDelta = scale;
-    }
-
     public void set_grid_marker_position(Vector3 position)
     {
         gridMarker.transform.localPosition = position;
     }
 
-    public void set_grid_marker_scale(Vector2 scale)
-    {
-        gridMarker.GetComponent<RectTransform>().sizeDelta = scale;
-    }
-
     public void set_aimline_position(Vector3 position)
     {
         aimLine.GetComponent<RectTransform>().position = position;
+    }
+
+    public void set_dispersion_marker_scale(Vector2 scale)
+    {
+        dispersion_circle.GetComponent<RectTransform>().sizeDelta = scale;
+    }
+
+    public void set_grid_marker_scale(Vector2 scale)
+    {
+        gridMarker.GetComponent<RectTransform>().sizeDelta = scale;
     }
 
     public void rotate_aimline_panel(Vector3 rotation)

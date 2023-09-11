@@ -61,7 +61,7 @@ public class CalculateAiming : MonoBehaviour
             gun_target_vector_pixels = target_position - gun_position;
 
             // draw the line between the marker icons for visual aid
-            if (gun_position != target_position) { draw_projectile_line(gun_target_vector_pixels, gun_position, target_position); }
+            if (gun_position != target_position && marker_class.isMoved_gun == true && marker_class.isMoved_target == true) { draw_projectile_line(gun_target_vector_pixels, gun_position, target_position); }
 
             // convert the distance in pixel to in-game meters
             pixel_scale = GameWindowCanvas.GetComponent<MarkerLocations>().get_grid_marker_scale();
@@ -74,7 +74,9 @@ public class CalculateAiming : MonoBehaviour
             {
                 desired_disp_circle_size_pixel = dispersion_m / pixel_scale;
                 dispersion_circle.GetComponent<RectTransform>().sizeDelta = new Vector2(desired_disp_circle_size_pixel, desired_disp_circle_size_pixel);
+                marker_class.set_dispersion_marker_open(true);
             }
+            else { marker_class.set_dispersion_marker_open(false); } // make sure the dispersion marker is off because its size is 0m
 
             //
             // add in the wind offset to the target location based on what gun type is firing
