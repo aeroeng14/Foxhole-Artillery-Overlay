@@ -47,8 +47,8 @@ public class CalculateAiming : MonoBehaviour
 
         MarkerLocations marker_class = GameWindowCanvas.GetComponent<MarkerLocations>();
 
-        //make sure both markers are visible before running calculations so the user isn't confused
-        if (marker_class.is_grid_marker_open() && marker_class.is_gun_marker_open() && marker_class.is_target_marker_open())
+        //make sure markers are visible and have been moved before running calculations so the user isn't confused
+        if (marker_class.is_grid_marker_open() && marker_class.is_gun_marker_open() && marker_class.is_target_marker_open() && marker_class.isMoved_gun && marker_class.isMoved_target)
         {
             // turn the line invisible while the calculations are ongoing
             marker_class.set_aimline_open(false);
@@ -440,6 +440,26 @@ public class CalculateAiming : MonoBehaviour
                 }
                 break;
             case 6: // rockets
+                switch (wind_tier)
+                {
+                    case 1:
+                        wind_offset_mag = 0.0f;
+                        break;
+                    case 2:
+                        wind_offset_mag = 0.0f;
+                        break;
+                    case 3:
+                        wind_offset_mag = 0.0f;
+                        break;
+                    case 4:
+                        wind_offset_mag = 0.0f;
+                        break;
+                    case 5:
+                        wind_offset_mag = 0.0f;
+                        break;
+                }
+                break;
+            case 7: // aimed infrastructure
                 switch (wind_tier)
                 {
                     case 1:

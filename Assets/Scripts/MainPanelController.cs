@@ -21,39 +21,6 @@ public class MainPanelController : MonoBehaviour
     [SerializeField] GameObject OptionsMenuCanvas;
     [SerializeField] GameObject SupportingCanvas;
 
-    bool ui_is_hidden;
-
-    public void Start()
-    {
-        ui_is_hidden = false;
-    }
-
-    public void Update()
-    {
-        MarkerLocations marker_class = GameWindowCanvas.GetComponent<MarkerLocations>();
-
-        if (Input.GetKeyDown("m") && ui_is_hidden == false)
-        {
-            ui_is_hidden = true;
-
-            marker_class.set_grid_marker_open(false);
-            marker_class.set_gun_marker_open(false);
-            marker_class.set_target_marker_open(false);
-            marker_class.set_dispersion_marker_open(false);
-            marker_class.set_aimline_open(false);
-        }   
-        else if (Input.GetKeyDown("m") && ui_is_hidden == true)
-        {
-            ui_is_hidden = false;
-
-            if (marker_class.isMoved_grid == true) { marker_class.set_grid_marker_open(true); }
-            if (marker_class.isMoved_gun == true) { marker_class.set_gun_marker_open(true); }
-            if (marker_class.isMoved_target == true) { marker_class.set_target_marker_open(true); }
-            if (marker_class.isMoved_target == true && OptionsMenuCanvas.GetComponent<DropdownController>().dispersion != 0f) { marker_class.set_dispersion_marker_open(true); }
-            if (marker_class.isMoved_gun == true && marker_class.isMoved_target == true) { marker_class.set_aimline_open(true); }
-        }
-    }
-
     public void OpenMainPanel()
     {
         // check if the main panel is not already open
@@ -93,37 +60,29 @@ public class MainPanelController : MonoBehaviour
             SupportingCanvas.SetActive(false);
 
             // close and reset the grid scale marker icon
-            if (marker_class.is_grid_marker_open())
-            {
-                marker_class.set_grid_marker_open(false);
-                marker_class.set_grid_marker_position(Vector3.zero);
-                marker_class.GetComponent<MarkerLocations>().reset_slider();
-            }
+            marker_class.isMoved_grid = false;
+            marker_class.set_grid_marker_open(false);
+            marker_class.set_grid_marker_position(Vector3.zero);
+            marker_class.GetComponent<MarkerLocations>().reset_slider();
 
             // close and reset the gun marker icon
-            if (marker_class.is_gun_marker_open())
-            {
-                marker_class.set_gun_marker_open(false);
-                marker_class.set_gun_marker_position(Vector3.zero);
-            }
+            marker_class.isMoved_gun = false;
+            marker_class.set_gun_marker_open(false);
+            marker_class.set_gun_marker_position(Vector3.zero);
 
             // close and reset the target marker icon and attached dispersion circle
-            if (marker_class.is_target_marker_open())
-            {
-                marker_class.set_target_marker_open(false);
-                marker_class.set_target_marker_position(Vector3.zero);
-                marker_class.set_dispersion_marker_open(false);
-                marker_class.set_dispersion_marker_position(Vector3.zero);
-                marker_class.set_dispersion_marker_scale(new Vector2(100.0f, 100.0f));
-            }
-
+            marker_class.isMoved_target = false;
+            marker_class.set_target_marker_open(false);
+            marker_class.set_target_marker_position(Vector3.zero);
+            marker_class.set_dispersion_marker_open(false);
+            marker_class.set_dispersion_marker_position(Vector3.zero);
+            marker_class.set_dispersion_marker_scale(new Vector2(100.0f, 100.0f));
+            
             // turn off the gun-target vector line
             marker_class.set_aimline_open(false);
 
-            ui_is_hidden = false;           
-            marker_class.isMoved_grid = false;
-            marker_class.isMoved_gun = false;
-            marker_class.isMoved_target = false;
+            // reset visibility boolean and button sprite
+            GameObject.Find("HideIconsButton").GetComponent<Visibility>().visReset(); 
         }
     }
 
