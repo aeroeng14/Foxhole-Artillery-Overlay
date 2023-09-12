@@ -53,14 +53,16 @@ public class MarkerLocations : MonoBehaviour
     
     public float get_grid_marker_scale()
     {
-        float foxhole_large_grid_m = 125.0f;
+        float return_scale_m_per_pix, foxhole_small_grid_m_x = 125f, foxhole_large_grid_m_x = 2197f;
         Vector2 grid_size_pixels;
 
         // length of a grid side in pixels
         grid_size_pixels = gridMarker.GetComponent<RectTransform>().sizeDelta;
 
-        // meters/pixel
-        return foxhole_large_grid_m/grid_size_pixels.x;
+        if (GameObject.Find("OptionsPanelCanvas").GetComponent<GridChanger>().grid_is_small) { return_scale_m_per_pix = foxhole_small_grid_m_x / grid_size_pixels.x; }
+        else { return_scale_m_per_pix = foxhole_large_grid_m_x / grid_size_pixels.x; };
+
+        return return_scale_m_per_pix;
     }
 
     //

@@ -63,6 +63,7 @@ public class MainPanelController : MonoBehaviour
             marker_class.isMoved_grid = false;
             marker_class.set_grid_marker_open(false);
             marker_class.set_grid_marker_position(Vector3.zero);
+            marker_class.set_grid_marker_scale(new Vector2(100f, 100f));
             marker_class.GetComponent<MarkerLocations>().reset_slider();
 
             // close and reset the gun marker icon
