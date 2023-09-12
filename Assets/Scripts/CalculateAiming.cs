@@ -11,6 +11,7 @@ public class CalculateAiming : MonoBehaviour
     [SerializeField] GameObject GameWindowCanvas;
     [SerializeField] GameObject OptionsPanelCanvas;
     [SerializeField] GameObject WindCanvas;
+    [SerializeField] GameObject dispersion_circle;
 
     public TMP_Text text_panel;
 
@@ -39,15 +40,15 @@ public class CalculateAiming : MonoBehaviour
     public void calculate_aimpoint()
     {
         Vector3 gun_position, target_position, gun_target_vector_pixels, wind_vector_meters, aim_here_vector_meters;
-        float azimuth_deg, distance_mag_meters, wind_offset_mag_meters, min_Range, max_Range;
+        float azimuth_deg, distance_mag_meters, wind_offset_mag_meters, min_Range, max_Range, dispersion_m, desired_disp_circle_size_pixel;
         Quaternion wind_angle_rotation;
         int gun_type;
 		int gun_platform;
 
         MarkerLocations marker_class = GameWindowCanvas.GetComponent<MarkerLocations>();
 
-        //make sure both markers are visible before running calculations so the user isn't confused
-        if (marker_class.is_grid_marker_open() && marker_class.is_gun_marker_open() && marker_class.is_target_marker_open())
+        //make sure markers are visible and have been moved before running calculations so the user isn't confused
+        if (marker_class.is_grid_marker_open() && marker_class.is_gun_marker_open() && marker_class.is_target_marker_open() && marker_class.isMoved_gun && marker_class.isMoved_target)
         {
             // turn the line invisible while the calculations are ongoing
             marker_class.set_aimline_open(false);
@@ -60,10 +61,22 @@ public class CalculateAiming : MonoBehaviour
             gun_target_vector_pixels = target_position - gun_position;
 
             // draw the line between the marker icons for visual aid
-            if (gun_position != target_position) { draw_projectile_line(gun_target_vector_pixels, gun_position, target_position); }
+            if (gun_position != target_position && marker_class.isMoved_gun == true && marker_class.isMoved_target == true) { draw_projectile_line(gun_target_vector_pixels, gun_position, target_position); }
 
             // convert the distance in pixel to in-game meters
             pixel_scale = GameWindowCanvas.GetComponent<MarkerLocations>().get_grid_marker_scale();
+
+            // get the dispersion for a platform in meters
+            dispersion_m = OptionsPanelCanvas.GetComponent<DropdownController>().dispersion;
+
+            // scale the dispersion circle based on the pixel_scale (if changed)
+            if (dispersion_m != 0.0f)
+            {
+                desired_disp_circle_size_pixel = dispersion_m / pixel_scale;
+                dispersion_circle.GetComponent<RectTransform>().sizeDelta = new Vector2(desired_disp_circle_size_pixel, desired_disp_circle_size_pixel);
+                marker_class.set_dispersion_marker_open(true);
+            }
+            else { marker_class.set_dispersion_marker_open(false); } // make sure the dispersion marker is off because its size is 0m
 
             //
             // add in the wind offset to the target location based on what gun type is firing
@@ -100,6 +113,25 @@ public class CalculateAiming : MonoBehaviour
             //Debug.Log("Pixel Where to Aim w/wind X: " + aim_here_vector_meters.x + " Pixel Where to Aim w/wind Y: " + aim_here_vector_meters.y);
             // ----
         }
+        else if (marker_class.is_grid_marker_open() && marker_class.is_target_marker_open())
+        {
+            // convert the distance in pixel to in-game meters
+            pixel_scale = GameWindowCanvas.GetComponent<MarkerLocations>().get_grid_marker_scale();
+
+            // get the dispersion for a platform in meters
+            dispersion_m = OptionsPanelCanvas.GetComponent<DropdownController>().dispersion;
+
+            // scale the dispersion circle based on the pixel_scale (if changed)
+            if (dispersion_m != 0.0f)
+            {
+                desired_disp_circle_size_pixel = dispersion_m / pixel_scale;
+                dispersion_circle.GetComponent<RectTransform>().sizeDelta = new Vector2(desired_disp_circle_size_pixel, desired_disp_circle_size_pixel);
+            }
+
+            // output zeros since there is no difference to calculate if all three are not on screen
+            azimuth_deg = 0.0f;
+            distance_mag_meters = 0.0f;
+        }
         else 
         {
             // output zeros since there is no difference to calculate if all three are not on screen
@@ -127,8 +159,6 @@ public class CalculateAiming : MonoBehaviour
                 aimingPanel.color = Color.red;
                 //aimingPanel.color = new Color(1f,0f,0f,0.5f);
             }
-
-
         }
         else
         {
@@ -410,6 +440,26 @@ public class CalculateAiming : MonoBehaviour
                 }
                 break;
             case 6: // rockets
+                switch (wind_tier)
+                {
+                    case 1:
+                        wind_offset_mag = 0.0f;
+                        break;
+                    case 2:
+                        wind_offset_mag = 0.0f;
+                        break;
+                    case 3:
+                        wind_offset_mag = 0.0f;
+                        break;
+                    case 4:
+                        wind_offset_mag = 0.0f;
+                        break;
+                    case 5:
+                        wind_offset_mag = 0.0f;
+                        break;
+                }
+                break;
+            case 7: // aimed infrastructure
                 switch (wind_tier)
                 {
                     case 1:

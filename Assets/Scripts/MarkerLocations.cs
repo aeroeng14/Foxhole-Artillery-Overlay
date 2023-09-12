@@ -11,9 +11,20 @@ public class MarkerLocations : MonoBehaviour
     [SerializeField] GameObject targetMarker;
     [SerializeField] GameObject gridMarker;
     [SerializeField] GameObject aimLine;
+    [SerializeField] GameObject dispersion_circle;
+
+    // global variables checking if the icon has ever been moved or not from its original position on the canvas
+    public bool isMoved_gun, isMoved_target, isMoved_grid;
+
+    private void Start()
+    {
+        isMoved_grid = false;
+        isMoved_gun = false;
+        isMoved_target = false;
+    }
 
     //
-    // Gets attributes of the marker icons and sets them to the global variables above for access by other methods
+    // Gets attributes of the marker icons for access by other class methods
     //
     public Vector3 get_gun_marker_position()
     {
@@ -23,6 +34,11 @@ public class MarkerLocations : MonoBehaviour
     public Vector3 get_target_marker_position()
     {
         return targetMarker.transform.position;
+    }
+
+    public Vector3 get_dispersion_marker_position()
+    {
+        return dispersion_circle.transform.position;
     }
 
     public Vector3 get_aimline_position()
@@ -37,14 +53,16 @@ public class MarkerLocations : MonoBehaviour
     
     public float get_grid_marker_scale()
     {
-        float foxhole_large_grid_m = 125.0f;
+        float return_scale_m_per_pix, foxhole_small_grid_m_x = 125f, foxhole_large_grid_m_x = 2197f;
         Vector2 grid_size_pixels;
 
         // length of a grid side in pixels
         grid_size_pixels = gridMarker.GetComponent<RectTransform>().sizeDelta;
 
-        // meters/pixel
-        return foxhole_large_grid_m/grid_size_pixels.x;
+        if (GameObject.Find("OptionsPanelCanvas").GetComponent<GridChanger>().grid_is_small) { return_scale_m_per_pix = foxhole_small_grid_m_x / grid_size_pixels.x; }
+        else { return_scale_m_per_pix = foxhole_large_grid_m_x / grid_size_pixels.x; };
+
+        return return_scale_m_per_pix;
     }
 
     //
@@ -60,19 +78,29 @@ public class MarkerLocations : MonoBehaviour
         targetMarker.transform.localPosition = position;
     }
 
+    public void set_dispersion_marker_position(Vector3 position)
+    {
+        dispersion_circle.transform.localPosition = position;
+    }
+
     public void set_grid_marker_position(Vector3 position)
     {
         gridMarker.transform.localPosition = position;
     }
 
-    public void set_grid_marker_scale(Vector3 scale)
-    {
-        gridMarker.transform.localScale = scale;
-    }
-
     public void set_aimline_position(Vector3 position)
     {
         aimLine.GetComponent<RectTransform>().position = position;
+    }
+
+    public void set_dispersion_marker_scale(Vector2 scale)
+    {
+        dispersion_circle.GetComponent<RectTransform>().sizeDelta = scale;
+    }
+
+    public void set_grid_marker_scale(Vector2 scale)
+    {
+        gridMarker.GetComponent<RectTransform>().sizeDelta = scale;
     }
 
     public void rotate_aimline_panel(Vector3 rotation)
@@ -114,6 +142,11 @@ public class MarkerLocations : MonoBehaviour
     public void set_target_marker_open(bool flag)
     {
         targetMarker.SetActive(flag);
+    }
+
+    public void set_dispersion_marker_open(bool flag)
+    {
+        dispersion_circle.SetActive(flag);
     }
 
     public void set_grid_marker_open(bool flag)

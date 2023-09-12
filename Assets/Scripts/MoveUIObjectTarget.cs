@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveUIObject : MonoBehaviour
+public class MoveUIObjectTarget : MonoBehaviour
 {
     // Add this script to the moveable object
     public RectTransform rectTransform;
+    public RectTransform dispersion_rectTransform;
     Vector3 position_offset_from_mouse;
     
     // how far away is the mouse input position from the pivot point of the icon
@@ -18,9 +19,10 @@ public class MoveUIObject : MonoBehaviour
     public void MoveObject()
     {
         rectTransform.position = Input.mousePosition + position_offset_from_mouse;
+        dispersion_rectTransform.position = Input.mousePosition + position_offset_from_mouse; // add in the dispersion circle too since I want the movement parented
+                                                                                              // but cannot make it a child otherwise it renders on top of the marker
 
         // flag if the icon has ever been moved from its starting location
-        if(this.gameObject.name == "GunMarkerIcon"){GameObject.Find("GameWindowCanvas").GetComponent<MarkerLocations>().isMoved_gun = true;}
-        else {GameObject.Find("GameWindowCanvas").GetComponent<MarkerLocations>().isMoved_grid = true;}
+        GameObject.Find("GameWindowCanvas").GetComponent<MarkerLocations>().isMoved_target = true;
     }
 }
