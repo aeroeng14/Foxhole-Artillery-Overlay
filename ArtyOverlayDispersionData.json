@@ -1,19 +1,15 @@
 [{
   "Name": "Handheld Mortar",
-  "Notes": "Test Load",
+  "Notes": "Wiki Values",
   "minRange": 45.0,
-  "maxRange": 110.0,
+  "maxRange": 80.0,
   "rangeTicks": [
     45.0,
-    60.0,
-    80.0,
-    100.0
+    80.0
   ],
   "baselineDispersion": [
-    0.0,
-    0.0,
-    0.0,
-    0.0
+    5.5,
+    12.0
   ],
   "windTierBias": [
     0.0,
@@ -30,20 +26,16 @@
 },
 {
   "Name": "Colonial Mortar Halftrack",
-  "Notes": "Test Load",
+  "Notes": "Wiki Values",
   "minRange": 45.0,
-  "maxRange": 110.0,
+  "maxRange": 80.0,
   "rangeTicks": [
     45.0,
-    60.0,
-    80.0,
-    100.0
+    80.0
   ],
   "baselineDispersion": [
-    0.0,
-    0.0,
-    0.0,
-    0.0
+    2.5,
+    9.45
   ],
   "windTierBias": [
     0.0,
@@ -60,20 +52,16 @@
 },
 {
   "Name": "Warden Mortar Tank",
-  "Notes": "Test Load",
+  "Notes": "Wiki Values",
   "minRange": 45.0,
-  "maxRange": 110.0,
+  "maxRange": 80.0,
   "rangeTicks": [
     45.0,
-    60.0,
-    80.0,
-    100.0
+    80.0
   ],
   "baselineDispersion": [
-    0.0,
-    0.0,
-    0.0,
-    0.0
+    2.5,
+    9.45
   ],
   "windTierBias": [
     0.0,
@@ -90,20 +78,16 @@
 },
 {
   "Name": "Colonial Gunboat",
-  "Notes": "Test Load",
-  "minRange": 45.0,
-  "maxRange": 110.0,
+  "Notes": "Wiki Values",
+  "minRange": 75.0,
+  "maxRange": 100.0,
   "rangeTicks": [
-    45.0,
-    60.0,
-    80.0,
+    75.0,
     100.0
   ],
   "baselineDispersion": [
-    0.0,
-    0.0,
-    0.0,
-    0.0
+    2.5,
+    14.5
   ],
   "windTierBias": [
     0.0,
@@ -120,20 +104,16 @@
 },
 {
   "Name": "Warden Gunboat",
-  "Notes": "Test Load",
-  "minRange": 45.0,
-  "maxRange": 110.0,
+  "Notes": "Wiki Values",
+  "minRange": 75.0,
+  "maxRange": 100.0,
   "rangeTicks": [
-    45.0,
-    60.0,
-    80.0,
+    75.0,
     100.0
   ],
   "baselineDispersion": [
-    0.0,
-    0.0,
-    0.0,
-    0.0
+    2.5,
+    14.5
   ],
   "windTierBias": [
     0.0,
@@ -150,20 +130,16 @@
 },
 {
   "Name": "Colonial DD",
-  "Notes": "Test Load",
-  "minRange": 45.0,
-  "maxRange": 110.0,
+  "Notes": "Wiki Values",
+  "minRange": 100.0,
+  "maxRange": 200.0,
   "rangeTicks": [
-    45.0,
-    60.0,
-    80.0,
-    100.0
+    100.0,
+    200.0
   ],
   "baselineDispersion": [
-    0.0,
-    0.0,
-    0.0,
-    0.0
+    2.5,
+    8.5
   ],
   "windTierBias": [
     0.0,
@@ -180,20 +156,16 @@
 },
 {
   "Name": "Warden Frigate",
-  "Notes": "Test Load",
-  "minRange": 45.0,
-  "maxRange": 110.0,
+  "Notes": "Wiki Values",
+  "minRange": 100.0,
+  "maxRange": 200.0,
   "rangeTicks": [
-    45.0,
-    60.0,
-    80.0,
-    100.0
+    100.0,
+    200.0
   ],
   "baselineDispersion": [
-    0.0,
-    0.0,
-    0.0,
-    0.0
+    2.5,
+    8.5
   ],
   "windTierBias": [
     0.0,
@@ -210,20 +182,16 @@
 },
 {
   "Name": "Colonial BB",
-  "Notes": "Test Load",
-  "minRange": 45.0,
-  "maxRange": 110.0,
+  "Notes": "Wiki Values",
+  "minRange": 100.0,
+  "maxRange": 225.0,
   "rangeTicks": [
-    45.0,
-    60.0,
-    80.0,
-    100.0
+    100.0,
+    225.0
   ],
   "baselineDispersion": [
-    0.0,
-    0.0,
-    0.0,
-    0.0
+    2.5,
+    8.5
   ],
   "windTierBias": [
     0.0,
@@ -240,20 +208,16 @@
 },
 {
   "Name": "Warden BB",
-  "Notes": "Test Load",
-  "minRange": 45.0,
-  "maxRange": 110.0,
+  "Notes": "Wiki Values",
+  "minRange": 100.0,
+  "maxRange": 225.0,
   "rangeTicks": [
-    45.0,
-    60.0,
-    80.0,
-    100.0
+    100.0,
+    225.0
   ],
   "baselineDispersion": [
-    0.0,
-    0.0,
-    0.0,
-    0.0
+    2.5,
+    8.5
   ],
   "windTierBias": [
     0.0,
@@ -270,20 +234,16 @@
 },
 {
   "Name": "Colonial 120mm",
-  "Notes": "Test Load",
-  "minRange": 45.0,
-  "maxRange": 110.0,
+  "Notes": "Wiki Values",
+  "minRange": 100.0,
+  "maxRange": 250.0,
   "rangeTicks": [
-    45.0,
-    60.0,
-    80.0,
-    100.0
+    100.0,
+    250.0
   ],
   "baselineDispersion": [
-    0.0,
-    0.0,
-    0.0,
-    0.0
+    22.5,
+    30.0
   ],
   "windTierBias": [
     0.0,
@@ -300,20 +260,16 @@
 },
 {
   "Name": "Warden 120mm",
-  "Notes": "Test Load",
-  "minRange": 45.0,
-  "maxRange": 110.0,
+  "Notes": "Wiki Values",
+  "minRange": 100.0,
+  "maxRange": 300.0,
   "rangeTicks": [
-    45.0,
-    60.0,
-    80.0,
-    100.0
+    100.0,
+    300.0
   ],
   "baselineDispersion": [
-    0.0,
-    0.0,
-    0.0,
-    0.0
+    25.0,
+    35.0
   ],
   "windTierBias": [
     0.0,
@@ -330,20 +286,16 @@
 },
 {
   "Name": "Colonial 150mm",
-  "Notes": "Test Load",
-  "minRange": 45.0,
-  "maxRange": 110.0,
+  "Notes": "Wiki Values",
+  "minRange": 200.0,
+  "maxRange": 350.0,
   "rangeTicks": [
-    45.0,
-    60.0,
-    80.0,
-    100.0
+    200.0,
+    350.0
   ],
   "baselineDispersion": [
-    0.0,
-    0.0,
-    0.0,
-    0.0
+    32.5,
+    40.0
   ],
   "windTierBias": [
     0.0,
@@ -360,20 +312,16 @@
 },
 {
   "Name": "Warden 150mm",
-  "Notes": "Test Load",
-  "minRange": 45.0,
-  "maxRange": 110.0,
+  "Notes": "Wiki Values",
+  "minRange": 100.0,
+  "maxRange": 300.0,
   "rangeTicks": [
-    45.0,
-    60.0,
-    80.0,
-    100.0
+    100.0,
+    300.0
   ],
   "baselineDispersion": [
-    0.0,
-    0.0,
-    0.0,
-    0.0
+    25.0,
+    35.0
   ],
   "windTierBias": [
     0.0,
@@ -390,20 +338,16 @@
 },
 {
   "Name": "Colonial 150mm SPG",
-  "Notes": "Test Load",
-  "minRange": 45.0,
-  "maxRange": 110.0,
+  "Notes": "Wiki Values",
+  "minRange": 120.0,
+  "maxRange": 250.0,
   "rangeTicks": [
-    45.0,
-    60.0,
-    80.0,
-    100.0
+    120.0,
+    250.0
   ],
   "baselineDispersion": [
-    0.0,
-    0.0,
-    0.0,
-    0.0
+    25.0,
+    35.0
   ],
   "windTierBias": [
     0.0,
@@ -420,20 +364,16 @@
 },
 {
   "Name": "Warden 150mm SPG",
-  "Notes": "Test Load",
-  "minRange": 45.0,
-  "maxRange": 110.0,
+  "Notes": "Wiki Values",
+  "minRange": 120.0,
+  "maxRange": 250.0,
   "rangeTicks": [
-    45.0,
-    60.0,
-    80.0,
-    100.0
+    120.0,
+    250.0
   ],
   "baselineDispersion": [
-    0.0,
-    0.0,
-    0.0,
-    0.0
+    25.0,
+    35.0
   ],
   "windTierBias": [
     0.0,
@@ -450,20 +390,16 @@
 },
 {
   "Name": "Storm Cannon",
-  "Notes": "Test Load",
-  "minRange": 45.0,
-  "maxRange": 110.0,
+  "Notes": "Wiki Values",
+  "minRange": 400.0,
+  "maxRange": 1000.0,
   "rangeTicks": [
-    45.0,
-    60.0,
-    80.0,
-    100.0
+    400.0,
+    1000.0
   ],
   "baselineDispersion": [
-    0.0,
-    0.0,
-    0.0,
-    0.0
+    50.0,
+    50.0
   ],
   "windTierBias": [
     0.0,
@@ -480,20 +416,16 @@
 },
 {
   "Name": "300mm Rail Cannon",
-  "Notes": "Test Load",
-  "minRange": 45.0,
-  "maxRange": 110.0,
+  "Notes": "Wiki Values",
+  "minRange": 350.0,
+  "maxRange": 500.0,
   "rangeTicks": [
-    45.0,
-    60.0,
-    80.0,
-    100.0
+    350.0,
+    500.0
   ],
   "baselineDispersion": [
-    0.0,
-    0.0,
-    0.0,
-    0.0
+    50.0,
+    50.0
   ],
   "windTierBias": [
     0.0,
@@ -510,20 +442,16 @@
 },
 {
   "Name": "Rocket Tankette",
-  "Notes": "Test Load",
-  "minRange": 45.0,
-  "maxRange": 110.0,
+  "Notes": "Wiki Values",
+  "minRange": 250.0,
+  "maxRange": 300.0,
   "rangeTicks": [
     45.0,
-    60.0,
-    80.0,
-    100.0
+    60.0
   ],
   "baselineDispersion": [
-    0.0,
-    0.0,
-    0.0,
-    0.0
+    30.0,
+    41.5
   ],
   "windTierBias": [
     0.0,
@@ -540,20 +468,16 @@
 },
 {
   "Name": "Rocket Truck",
-  "Notes": "Test Load",
-  "minRange": 45.0,
-  "maxRange": 110.0,
+  "Notes": "Wiki Values",
+  "minRange": 225.0,
+  "maxRange": 350.0,
   "rangeTicks": [
-    45.0,
-    60.0,
-    80.0,
-    100.0
+    225.0,
+    350.0
   ],
   "baselineDispersion": [
-    0.0,
-    0.0,
-    0.0,
-    0.0
+    25.0,
+    41.5
   ],
   "windTierBias": [
     0.0,
@@ -570,20 +494,16 @@
 },
 {
   "Name": "Rocket Battery",
-  "Notes": "Test Load",
-  "minRange": 45.0,
-  "maxRange": 110.0,
+  "Notes": "Wiki Values",
+  "minRange": 200.0,
+  "maxRange": 425.0,
   "rangeTicks": [
-    45.0,
-    60.0,
-    80.0,
-    100.0
+    200.0,
+    425.0
   ],
   "baselineDispersion": [
-    0.0,
-    0.0,
-    0.0,
-    0.0
+    25.0,
+    41.5
   ],
   "windTierBias": [
     0.0,
@@ -600,20 +520,16 @@
 },
 {
   "Name": "Rocket Scout Tank",
-  "Notes": "Test Load",
-  "minRange": 45.0,
-  "maxRange": 110.0,
+  "Notes": "Wiki Values",
+  "minRange": 200.0,
+  "maxRange": 350.0,
   "rangeTicks": [
-    45.0,
-    60.0,
-    80.0,
-    100.0
+    200.0,
+    350.0
   ],
   "baselineDispersion": [
-    0.0,
-    0.0,
-    0.0,
-    0.0
+    30.0,
+    41.0
   ],
   "windTierBias": [
     0.0,
@@ -630,20 +546,16 @@
 },
 {
   "Name": "Rocket Pushcart",
-  "Notes": "Test Load",
-  "minRange": 45.0,
-  "maxRange": 110.0,
+  "Notes": "Wiki Values",
+  "minRange": 225.0,
+  "maxRange": 325.0,
   "rangeTicks": [
-    45.0,
-    60.0,
-    80.0,
-    100.0
+    225.0,
+    325.0
   ],
   "baselineDispersion": [
-    0.0,
-    0.0,
-    0.0,
-    0.0
+    25.0,
+    37.5
   ],
   "windTierBias": [
     0.0,
@@ -660,20 +572,16 @@
 },
 {
   "Name": "Rocket Halftrack",
-  "Notes": "Test Load",
-  "minRange": 45.0,
-  "maxRange": 110.0,
+  "Notes": "Wiki Values",
+  "minRange": 200.0,
+  "maxRange": 275.0,
   "rangeTicks": [
-    45.0,
-    60.0,
-    80.0,
-    100.0
+    200.0,
+    275.0
   ],
   "baselineDispersion": [
-    0.0,
-    0.0,
-    0.0,
-    0.0
+    25.0,
+    37.5
   ],
   "windTierBias": [
     0.0,
@@ -690,20 +598,16 @@
 },
 {
   "Name": "Intelligence Center",
-  "Notes": "Test Load",
-  "minRange": 45.0,
-  "maxRange": 110.0,
+  "Notes": "Wiki Values",
+  "minRange": 500.0,
+  "maxRange": 2000.0,
   "rangeTicks": [
-    45.0,
-    60.0,
-    80.0,
-    100.0
+    500.0,
+    2000.0
   ],
   "baselineDispersion": [
-    0.0,
-    0.0,
-    0.0,
-    0.0
+    250.0,
+    120.0
   ],
   "windTierBias": [
     0.0,

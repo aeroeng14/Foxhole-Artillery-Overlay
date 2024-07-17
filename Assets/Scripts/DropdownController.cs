@@ -49,7 +49,10 @@ public class DropdownController : MonoBehaviour
     public float minRange;
     public float maxRange;
     public float dispersion;
+    public platformWindageStats chosenPlatform;
+    public List<platformWindageStats> platformWindages;
 
+    // json Object Class Definition
     public class platformWindageStats
     {
         public string Name;
@@ -71,6 +74,28 @@ public class DropdownController : MonoBehaviour
         maxRange = 0f;
         dispersion = 0f;
 
+        // creating a dummy class object on initialization
+        platformWindageStats chosenPlatform = new platformWindageStats
+        {
+            Name = "None",
+            Notes = "None",
+            minRange = 0f,
+            maxRange = 0f,
+            rangeTicks = new float[] { 0f, 0f },
+            baselineDispersion = new float[] { 0f, 0f },
+            windTierBias = new float[] { 0f, 0f },
+            crossTrackReduction = new float[] { 0f, 0f },
+            inTrackReduction = new float[] { 0f, 0f },
+        };
+
+        // load the json data on first start
+        load_json_data();
+
+    }
+
+    void load_json_data()
+    {
+        
         // ***********************
         // load dispersions file
         // ***********************
@@ -84,59 +109,57 @@ public class DropdownController : MonoBehaviour
         // deserialize the fileText string into a new List variable myData, of type platformWindageStats class
         var myData = JsonConvert.DeserializeObject<List<platformWindageStats>>(fileText);
 
-
-        // load the class objects for every arty platform
-        platformWindageStats mortar             = myData[0];
-
-        platformWindageStats mortarCHt          = myData[1];
-        platformWindageStats mortarWLt          = myData[2];
-        platformWindageStats gunBoatC           = myData[3];
-        platformWindageStats gunBoatW           = myData[4];
-        platformWindageStats shipCDD            = myData[5];
-        platformWindageStats shipWFrig          = myData[6];
-        platformWindageStats shipCBB            = myData[7];
-        platformWindageStats shipWBB            = myData[8];
-        platformWindageStats artyC120           = myData[9];
-        platformWindageStats artyW120           = myData[10];
-        platformWindageStats artyC150           = myData[11];
-        platformWindageStats artyW150           = myData[12];
-        platformWindageStats artyC150SPG        = myData[13];
-        platformWindageStats artyW150SPG        = myData[14];
-        platformWindageStats arty300            = myData[15];
-        platformWindageStats artyRails300       = myData[16];
-        platformWindageStats rocketCTankette    = myData[17];
-        platformWindageStats rocketCTruck       = myData[18];
-        platformWindageStats rocketCEmplace     = myData[19];        
-        platformWindageStats rocketWTank        = myData[20];
-        platformWindageStats rocketWpush        = myData[21];
-        platformWindageStats rocketWHt          = myData[22];      
-        platformWindageStats artyIntelCenter    = myData[23];
-        
-
-        for (int i = 0; i < myData.Count; i++)
-        {
-            Debug.Log(myData[i].Name);
-        }
+        // populate the global List of all parsed platform json values
+        platformWindages = myData;
 
 
+        //// load the class objects for every arty platform
+        //platformWindageStats mortar             = myData[0];
+        //platformWindageStats mortarCHt          = myData[1];
+        //platformWindageStats mortarWLt          = myData[2];
+        //platformWindageStats gunBoatC           = myData[3];
+        //platformWindageStats gunBoatW           = myData[4];
+        //platformWindageStats shipCDD            = myData[5];
+        //platformWindageStats shipWFrig          = myData[6];
+        //platformWindageStats shipCBB            = myData[7];
+        //platformWindageStats shipWBB            = myData[8];
+        //platformWindageStats artyC120           = myData[9];
+        //platformWindageStats artyW120           = myData[10];
+        //platformWindageStats artyC150           = myData[11];
+        //platformWindageStats artyW150           = myData[12];
+        //platformWindageStats artyC150SPG        = myData[13];
+        //platformWindageStats artyW150SPG        = myData[14];
+        //platformWindageStats arty300            = myData[15];
+        //platformWindageStats artyRails300       = myData[16];
+        //platformWindageStats rocketCTankette    = myData[17];
+        //platformWindageStats rocketCTruck       = myData[18];
+        //platformWindageStats rocketCEmplace     = myData[19];
+        //platformWindageStats rocketWTank        = myData[20];
+        //platformWindageStats rocketWpush        = myData[21];
+        //platformWindageStats rocketWHt          = myData[22];
+        //platformWindageStats artyIntelCenter    = myData[23];
+
+        //// DEBUG
+        //// ----------------------------------------------------
         //Debug.Log("Name:" + mortar.Name);
         //Debug.Log("Notes:" + mortar.Notes);
         //Debug.Log("Min range:" + mortar.minRange);
         //Debug.Log("Max range:" + mortar.maxRange);
-
+        //
         //for (int i = 0; i < mortar.rangeTicks.Length; i++) 
         //{
         //    Debug.Log("Range:" + mortar.rangeTicks[i]);
         //    Debug.Log("Disp:" + mortar.baselineDispersion[i]);
         //    Debug.Log("Bias:" + mortar.windTierBias[i]);            
         //}
-
+        //
         //Debug.Log("Cross:" + mortar.crossTrackReduction[0]);
         //Debug.Log("InTrack:" + mortar.inTrackReduction[0]);
+        //// ----------------------------------------------------
 
 
     }
-
+   
     public void populate_gunmodels()
     {
         int weapontype_idx = typeDropdown.value;
@@ -180,7 +203,6 @@ public class DropdownController : MonoBehaviour
                 items.Add("Warden \"Huber Exalt\" Cannon");
                 items.Add("Colonial Lance-46 \"Sarissa\" SPG");
                 items.Add("Warden Flood Mk. IX \"Stain\" SPG");
-
                 break;
             case 6:
                 items.Add("Choose a platform");
@@ -219,6 +241,21 @@ public class DropdownController : MonoBehaviour
         {
             case 0: // None (default)
                 dispersion = 0f; // reset this value if you switch from anything else back to distance only
+
+                platformWindageStats aa = new platformWindageStats
+                {
+                    Name = "None",
+                    Notes = "None",
+                    minRange = 0f,
+                    maxRange = 0f,
+                    rangeTicks = new float[] { 0f, 0f },
+                    baselineDispersion = new float[] { 0f, 0f },
+                    windTierBias = new float[] { 0f, 0f },
+                    crossTrackReduction = new float[] { 0f, 0f },
+                    inTrackReduction = new float[] { 0f, 0f },
+                };
+
+                chosenPlatform = aa;
                 break;
 
             case 1: // mortars
@@ -226,21 +263,15 @@ public class DropdownController : MonoBehaviour
                 {
                     case 1:
                         gunImage.GetComponent<Image>().sprite = normal_mortar;
-                        minRange = 45f;
-                        maxRange = 80f;
-                        dispersion = 0f; // radius
+                        chosenPlatform = platformWindages[0];
                         break;
                     case 2:
                         gunImage.GetComponent<Image>().sprite = collie_mht;
-                        minRange = 45f;
-                        maxRange = 80f;
-                        dispersion = 0f; // radius
+                        chosenPlatform = platformWindages[1];
                         break;
                     case 3:
                         gunImage.GetComponent<Image>().sprite = warden_mtank;
-                        minRange = 45f;
-                        maxRange = 80f;
-                        dispersion = 0f; // radius
+                        chosenPlatform = platformWindages[2];
                         break;
                 }
                 break;
@@ -250,15 +281,11 @@ public class DropdownController : MonoBehaviour
                 {
                     case 1:
                         gunImage.GetComponent<Image>().sprite = collie_gb;
-                        minRange = 50f;
-                        maxRange = 100f;
-                        dispersion = 0f; // radius
+                        chosenPlatform = platformWindages[3];
                         break;
                     case 2:
                         gunImage.GetComponent<Image>().sprite = warden_gb;
-                        minRange = 50f;
-                        maxRange = 100f;
-                        dispersion = 0f; // radius
+                        chosenPlatform = platformWindages[4];
                         break;
                 }
                 break;
@@ -268,27 +295,19 @@ public class DropdownController : MonoBehaviour
                 {
                     case 1:
                         gunImage.GetComponent<Image>().sprite = collie_DD;
-                        minRange = 50f;
-                        maxRange = 100f;
-                        dispersion = 0f; // radius
+                        chosenPlatform = platformWindages[5];
                         break;
                     case 2:
                         gunImage.GetComponent<Image>().sprite = warden_Frig;
-                        minRange = 50f;
-                        maxRange = 100f;
-                        dispersion = 0f; // radius
+                        chosenPlatform = platformWindages[6];
                         break;
                     case 3:
                         gunImage.GetComponent<Image>().sprite = collie_BB;
-                        minRange = 50f;
-                        maxRange = 100f;
-                        dispersion = 0f; // radius
+                        chosenPlatform = platformWindages[7];
                         break;
                     case 4:
                         gunImage.GetComponent<Image>().sprite = warden_BB;
-                        minRange = 50f;
-                        maxRange = 100f;
-                        dispersion = 0f; // radius
+                        chosenPlatform = platformWindages[8];
                         break;
                 }
                 break;
@@ -298,15 +317,11 @@ public class DropdownController : MonoBehaviour
                 {
                     case 1:
                         gunImage.GetComponent<Image>().sprite = collie_120;
-                        minRange = 100f;
-                        maxRange = 250f;
-                        dispersion = 0f; // radius
+                        chosenPlatform = platformWindages[9];
                         break;
                     case 2:
                         gunImage.GetComponent<Image>().sprite = warden_120;
-                        minRange = 100f;
-                        maxRange = 300f;
-                        dispersion = 0f; // radius
+                        chosenPlatform = platformWindages[10];
                         break;
                 }
                 break;
@@ -316,27 +331,19 @@ public class DropdownController : MonoBehaviour
                 {
                     case 1:
                         gunImage.GetComponent<Image>().sprite = collie_150;
-                        minRange = 200f;
-                        maxRange = 350f;
-                        dispersion = 0f; // radius
+                        chosenPlatform = platformWindages[11];
                         break;
                     case 2:
                         gunImage.GetComponent<Image>().sprite = warden_150;
-                        minRange = 100f;
-                        maxRange = 300f;
-                        dispersion = 0f; // radius
+                        chosenPlatform = platformWindages[12];
                         break;
                     case 3:
                         gunImage.GetComponent<Image>().sprite = collie_150_spg;
-                        minRange = 200f;
-                        maxRange = 350f;
-                        dispersion = 0f; // radius
+                        chosenPlatform = platformWindages[13];
                         break;
                     case 4:
                         gunImage.GetComponent<Image>().sprite = warden_150_spg;
-                        minRange = 100f;
-                        maxRange = 300f;
-                        dispersion = 0f; // radius
+                        chosenPlatform = platformWindages[14];
                         break;
                 }
                 break;
@@ -346,15 +353,11 @@ public class DropdownController : MonoBehaviour
                 {
                     case 1:
                         gunImage.GetComponent<Image>().sprite = stormcannon;
-                        minRange = 400f;
-                        maxRange = 1000f;
-                        dispersion = 0f; // radius
+                        chosenPlatform = platformWindages[15];
                         break;
                     case 2:
                         gunImage.GetComponent<Image>().sprite = rail_sc;
-                        minRange = 350f;
-                        maxRange = 500f;
-                        dispersion = 0f; // radius
+                        chosenPlatform = platformWindages[16];
                         break;
                 }
                 break;
@@ -364,39 +367,27 @@ public class DropdownController : MonoBehaviour
                 {
                     case 1:
                         gunImage.GetComponent<Image>().sprite = collie_rockettankette;
-                        minRange = 225f;
-                        maxRange = 400f;
-                        dispersion = 0f; // radius
+                        chosenPlatform = platformWindages[17];
                         break;
                     case 2:
                         gunImage.GetComponent<Image>().sprite = collie_rockettruck;
-                        minRange = 225f;
-                        maxRange = 500f;
-                        dispersion = 0f; // radius
+                        chosenPlatform = platformWindages[18];
                         break;
                     case 3:
                         gunImage.GetComponent<Image>().sprite = collie_rocketbattery;
-                        minRange = 200f;
-                        maxRange = 425f;
-                        dispersion = 0f; // radius
+                        chosenPlatform = platformWindages[19];
                         break;
                     case 4:
                         gunImage.GetComponent<Image>().sprite = warden_rockettank;
-                        minRange = 225f;
-                        maxRange = 475f;
-                        dispersion = 0f; // radius
+                        chosenPlatform = platformWindages[20];
                         break;
                     case 5:
                         gunImage.GetComponent<Image>().sprite = warden_rocketpush;
-                        minRange = 225f;
-                        maxRange = 450f;
-                        dispersion = 0f; // radius
+                        chosenPlatform = platformWindages[21];
                         break;
                     case 6:
                         gunImage.GetComponent<Image>().sprite = warden_rocketht;
-                        minRange = 200f;
-                        maxRange = 225f;
-                        dispersion = 0f; // radius
+                        chosenPlatform = platformWindages[22];
                         break;
                 }
                 break;
@@ -406,9 +397,7 @@ public class DropdownController : MonoBehaviour
                 {
                     case 1:
                         gunImage.GetComponent<Image>().sprite = intelcenter;
-                        minRange = 500f;
-                        maxRange = 2000f;
-                        dispersion = 240f; // radius
+                        chosenPlatform = platformWindages[23];
                         break;
                 }
                 break;
@@ -424,6 +413,21 @@ public class DropdownController : MonoBehaviour
         maxRange = 0f;
         dispersion = 0f;
         typeDropdown.value = 0;
+
+        platformWindageStats aa = new platformWindageStats
+        {
+            Name = "None",
+            Notes = "None",
+            minRange = 0f,
+            maxRange = 0f,
+            rangeTicks = new float[] { 0f, 0f },
+            baselineDispersion = new float[] { 0f, 0f },
+            windTierBias = new float[] { 0f, 0f },
+            crossTrackReduction = new float[] { 0f, 0f },
+            inTrackReduction = new float[] { 0f, 0f },
+        };
+
+        chosenPlatform = aa;
 
         // clear any previous dropdown items      
         weaponDropdown.options.Add(new TMP_Dropdown.OptionData() { text = "Gun Model" });
