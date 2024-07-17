@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System.IO;
+using System;
+using Newtonsoft.Json;
+
 
 public class DropdownController : MonoBehaviour
 {
@@ -18,11 +22,17 @@ public class DropdownController : MonoBehaviour
     [SerializeField] Sprite warden_mtank;
     [SerializeField] Sprite collie_gb;
     [SerializeField] Sprite warden_gb;
-    [SerializeField] Sprite warden_gb2;
+    [SerializeField] Sprite collie_DD;
+    [SerializeField] Sprite collie_BB;
+    [SerializeField] Sprite warden_Frig;
+    [SerializeField] Sprite warden_BB;
+    [SerializeField] Sprite collie_sub;
     [SerializeField] Sprite collie_120;
     [SerializeField] Sprite warden_120;
     [SerializeField] Sprite collie_150;
     [SerializeField] Sprite warden_150;
+    [SerializeField] Sprite collie_150_spg;
+    [SerializeField] Sprite warden_150_spg;
     [SerializeField] Sprite stormcannon;
     [SerializeField] Sprite rail_sc;
     [SerializeField] Sprite collie_rockettankette;
@@ -40,6 +50,19 @@ public class DropdownController : MonoBehaviour
     public float maxRange;
     public float dispersion;
 
+    public class platformWindageStats
+    {
+        public string Name;
+        public string Notes;
+        public float minRange;
+        public float maxRange;
+        public float[] rangeTicks;
+        public float[] baselineDispersion;     // f(range)
+        public float[] windTierBias;           // f(wind tier)
+        public float[] crossTrackReduction;    // f(wind tier)
+        public float[] inTrackReduction;       // f(wind tier)
+    }
+
     void Awake()
     {
         gunType = 0;
@@ -47,6 +70,71 @@ public class DropdownController : MonoBehaviour
         minRange = 0f;
         maxRange = 0f;
         dispersion = 0f;
+
+        // ***********************
+        // load dispersions file
+        // ***********************
+        string folder_path = Directory.GetCurrentDirectory();
+        string filename = "ArtyOverlayDispersionData.json";
+        string fullpath = Path.Combine(folder_path, filename);
+
+        // read the json file contents to a string
+        string fileText = File.ReadAllText(fullpath);
+
+        // deserialize the fileText string into a new List variable myData, of type platformWindageStats class
+        var myData = JsonConvert.DeserializeObject<List<platformWindageStats>>(fileText);
+
+
+        // load the class objects for every arty platform
+        platformWindageStats mortar             = myData[0];
+
+        platformWindageStats mortarCHt          = myData[1];
+        platformWindageStats mortarWLt          = myData[2];
+        platformWindageStats gunBoatC           = myData[3];
+        platformWindageStats gunBoatW           = myData[4];
+        platformWindageStats shipCDD            = myData[5];
+        platformWindageStats shipWFrig          = myData[6];
+        platformWindageStats shipCBB            = myData[7];
+        platformWindageStats shipWBB            = myData[8];
+        platformWindageStats artyC120           = myData[9];
+        platformWindageStats artyW120           = myData[10];
+        platformWindageStats artyC150           = myData[11];
+        platformWindageStats artyW150           = myData[12];
+        platformWindageStats artyC150SPG        = myData[13];
+        platformWindageStats artyW150SPG        = myData[14];
+        platformWindageStats arty300            = myData[15];
+        platformWindageStats artyRails300       = myData[16];
+        platformWindageStats rocketCTankette    = myData[17];
+        platformWindageStats rocketCTruck       = myData[18];
+        platformWindageStats rocketCEmplace     = myData[19];        
+        platformWindageStats rocketWTank        = myData[20];
+        platformWindageStats rocketWpush        = myData[21];
+        platformWindageStats rocketWHt          = myData[22];      
+        platformWindageStats artyIntelCenter    = myData[23];
+        
+
+        for (int i = 0; i < myData.Count; i++)
+        {
+            Debug.Log(myData[i].Name);
+        }
+
+
+        //Debug.Log("Name:" + mortar.Name);
+        //Debug.Log("Notes:" + mortar.Notes);
+        //Debug.Log("Min range:" + mortar.minRange);
+        //Debug.Log("Max range:" + mortar.maxRange);
+
+        //for (int i = 0; i < mortar.rangeTicks.Length; i++) 
+        //{
+        //    Debug.Log("Range:" + mortar.rangeTicks[i]);
+        //    Debug.Log("Disp:" + mortar.baselineDispersion[i]);
+        //    Debug.Log("Bias:" + mortar.windTierBias[i]);            
+        //}
+
+        //Debug.Log("Cross:" + mortar.crossTrackReduction[0]);
+        //Debug.Log("InTrack:" + mortar.inTrackReduction[0]);
+
+
     }
 
     public void populate_gunmodels()
@@ -73,24 +161,33 @@ public class DropdownController : MonoBehaviour
                 items.Add("Choose a platform");
                 items.Add("Colonial \"Charon\" Gunboat");
                 items.Add("Warden \"Ronan\" Gunboat");
-                items.Add("Warden \"Ronan Meteora\" Gunship");
                 break;
             case 3:
+                items.Add("Choose a platform");
+                items.Add("Colonial \"Conqueror\" Destroyer");
+                items.Add("Warden \"Blacksteele\" Frigate");
+                items.Add("Colonial \"Titan\" Battleship");
+                items.Add("Warden \"Callahan\" Battleship");
+                break;
+            case 4:
                 items.Add("Choose a platform");
                 items.Add("Colonial \"Koronides\" Field Gun");
                 items.Add("Warden \"Huber Lariat\" Light Artillery");
                 break;
-            case 4:
+            case 5:
                 items.Add("Choose a platform");
                 items.Add("Colonial \"Thunderbolt\" Cannon");
                 items.Add("Warden \"Huber Exalt\" Cannon");
+                items.Add("Colonial Lance-46 \"Sarissa\" SPG");
+                items.Add("Warden Flood Mk. IX \"Stain\" SPG");
+
                 break;
-            case 5:
+            case 6:
                 items.Add("Choose a platform");
                 items.Add("Storm Cannon");
                 items.Add("\"Tempest\" Rail Cannon");
                 break;
-            case 6:
+            case 7:
                 items.Add("Choose a platform");
                 items.Add("Colonial \"Deioneus\" Rocket Tankette");
                 items.Add("Colonial \"Retiarius\" Rocket Truck");
@@ -99,7 +196,7 @@ public class DropdownController : MonoBehaviour
                 items.Add("Warden \"Wasp Nest\" Rocket Launcher");
                 items.Add("Warden \"Skycaller\" Rocket Halftrack");
                 break;
-            case 7:
+            case 8:
                 items.Add("Choose a platform");
                 items.Add("Intelligence Center");
                 break;
@@ -163,8 +260,32 @@ public class DropdownController : MonoBehaviour
                         maxRange = 100f;
                         dispersion = 0f; // radius
                         break;
+                }
+                break;
+
+            case 3: // large ships
+                switch (gun)
+                {
+                    case 1:
+                        gunImage.GetComponent<Image>().sprite = collie_DD;
+                        minRange = 50f;
+                        maxRange = 100f;
+                        dispersion = 0f; // radius
+                        break;
+                    case 2:
+                        gunImage.GetComponent<Image>().sprite = warden_Frig;
+                        minRange = 50f;
+                        maxRange = 100f;
+                        dispersion = 0f; // radius
+                        break;
                     case 3:
-                        gunImage.GetComponent<Image>().sprite = warden_gb2;
+                        gunImage.GetComponent<Image>().sprite = collie_BB;
+                        minRange = 50f;
+                        maxRange = 100f;
+                        dispersion = 0f; // radius
+                        break;
+                    case 4:
+                        gunImage.GetComponent<Image>().sprite = warden_BB;
                         minRange = 50f;
                         maxRange = 100f;
                         dispersion = 0f; // radius
@@ -172,7 +293,7 @@ public class DropdownController : MonoBehaviour
                 }
                 break;
 
-            case 3: // 120mm
+            case 4: // 120mm
                 switch (gun)
                 {
                     case 1:
@@ -190,7 +311,7 @@ public class DropdownController : MonoBehaviour
                 }
                 break;
 
-            case 4: // 150mm
+            case 5: // 150mm
                 switch (gun)
                 {
                     case 1:
@@ -205,10 +326,22 @@ public class DropdownController : MonoBehaviour
                         maxRange = 300f;
                         dispersion = 0f; // radius
                         break;
+                    case 3:
+                        gunImage.GetComponent<Image>().sprite = collie_150_spg;
+                        minRange = 200f;
+                        maxRange = 350f;
+                        dispersion = 0f; // radius
+                        break;
+                    case 4:
+                        gunImage.GetComponent<Image>().sprite = warden_150_spg;
+                        minRange = 100f;
+                        maxRange = 300f;
+                        dispersion = 0f; // radius
+                        break;
                 }
                 break;
 
-            case 5: // 300mm
+            case 6: // 300mm
                 switch (gun)
                 {
                     case 1:
@@ -226,7 +359,7 @@ public class DropdownController : MonoBehaviour
                 }
                 break;
 
-            case 6: // rockets
+            case 7: // rockets
                 switch (gun)
                 {
                     case 1:
@@ -268,7 +401,7 @@ public class DropdownController : MonoBehaviour
                 }
                 break;
 
-            case 7: // aimed infrastructure
+            case 8: // aimed infrastructure
                 switch (gun)
                 {
                     case 1:
