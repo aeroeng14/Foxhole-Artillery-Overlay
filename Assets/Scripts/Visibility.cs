@@ -39,7 +39,7 @@ public class Visibility : MonoBehaviour
             if (marker_class.isMoved_grid == true) { marker_class.set_grid_marker_open(true); }
             if (marker_class.isMoved_gun == true) { marker_class.set_gun_marker_open(true); }
             if (marker_class.isMoved_target == true) { marker_class.set_target_marker_open(true); }
-            if (marker_class.isMoved_target == true && GameObject.Find("OptionsPanelCanvas").GetComponent<DropdownController>().dispersion != 0f) { marker_class.set_dispersion_marker_open(true); }
+            //if (marker_class.isMoved_target == true && GameObject.Find("OptionsPanelCanvas").GetComponent<DropdownController>().dispersion != 0f) { marker_class.set_dispersion_marker_open(true); }
             if (marker_class.isMoved_gun == true && marker_class.isMoved_target == true) { marker_class.set_aimline_open(true); }
         }
     }

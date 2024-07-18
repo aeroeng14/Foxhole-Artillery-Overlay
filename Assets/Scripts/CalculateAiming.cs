@@ -5,6 +5,7 @@ using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class CalculateAiming : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class CalculateAiming : MonoBehaviour
     float pixel_scale;
     int wind_tier;
     float wind_direction_deg;
+    float wind_prev_deg;
 
     void Awake()
     {
@@ -27,13 +29,14 @@ public class CalculateAiming : MonoBehaviour
 
         pixel_scale = 1f;
         wind_tier = 1;
-        wind_direction_deg = 0.0f;
+        wind_direction_deg = 0f;
+        wind_prev_deg = 0f;
     }
 
     public void reset_text()
     {
         text_panel.text = "Azimuth: 0 deg         Distance: 0m";
-        Image aimingPanel = GetComponentInChildren<Image>();
+        UnityEngine.UI.Image aimingPanel = GetComponentInChildren<UnityEngine.UI.Image>();
         aimingPanel.color = Color.white;
     }
 
@@ -41,9 +44,9 @@ public class CalculateAiming : MonoBehaviour
     {
         Vector3 gun_position, target_position, gun_target_vector_pixels, wind_vector_meters, aim_here_vector_meters;
         float azimuth_deg, distance_mag_meters, wind_offset_mag_meters, min_Range, max_Range, dispersion_m, desired_disp_circle_size_pixel;
+        float wind_delta_deg;
         Quaternion wind_angle_rotation;
-        int gun_type;
-		int gun_platform;
+        int num_range_ticks;
 
         MarkerLocations marker_class = GameWindowCanvas.GetComponent<MarkerLocations>();
 
@@ -66,36 +69,29 @@ public class CalculateAiming : MonoBehaviour
             // convert the distance in pixel to in-game meters
             pixel_scale = GameWindowCanvas.GetComponent<MarkerLocations>().get_grid_marker_scale();
 
-            // get the dispersion for a platform in meters
-            dispersion_m = OptionsPanelCanvas.GetComponent<DropdownController>().dispersion;
 
-            // scale the dispersion circle based on the pixel_scale (if changed)
-            if (dispersion_m != 0.0f)
-            {
-                desired_disp_circle_size_pixel = dispersion_m / pixel_scale;
-                dispersion_circle.GetComponent<RectTransform>().sizeDelta = new Vector2(desired_disp_circle_size_pixel, desired_disp_circle_size_pixel);
-                marker_class.set_dispersion_marker_open(true);
-            }
-            else { marker_class.set_dispersion_marker_open(false); } // make sure the dispersion marker is off because its size is 0m
-
-            //
+            // **********************************************************
             // add in the wind offset to the target location based on what gun type is firing
-            //
-            // ----------------------------------------------------------------------------------------
+            // **********************************************************
             wind_direction_deg = WindCanvas.GetComponent<WindGauge>().wind_direction;
             wind_tier = WindCanvas.GetComponent<WindGauge>().wind_strength;
+            wind_delta_deg = wind_direction_deg - wind_prev_deg;
 
-            // get the raw wind offset distance depending on the type of gun (120 vs 150, etc.)
-            gun_type = OptionsPanelCanvas.GetComponent<DropdownController>().gunType;
-			gun_platform = OptionsPanelCanvas.GetComponent<DropdownController>().gun;
-            wind_offset_mag_meters = calc_wind_offset(gun_type, gun_platform, wind_tier);
+            // get the raw wind offset distance
+            if (OptionsPanelCanvas.GetComponent<DropdownController>().chosenPlatform.Name != "None")
+            {
+                wind_offset_mag_meters = OptionsPanelCanvas.GetComponent<DropdownController>().chosenPlatform.windTierBias[wind_tier - 1];
+            }
+            else {wind_offset_mag_meters = 0f;}
 
             // decompose the wind direction into vector components so we can add it easily
             wind_angle_rotation = Quaternion.Euler(0, 0, -wind_direction_deg); // the unit vector
-            wind_vector_meters = wind_angle_rotation * new Vector3(0,1,0) * wind_offset_mag_meters;// multiplied by the offset from above
+            wind_vector_meters = wind_angle_rotation * new Vector3(0, 1, 0) * wind_offset_mag_meters;// multiplied by the offset from above            
+            // **********************************************************
+
 
             // includes wind
-            aim_here_vector_meters = gun_target_vector_pixels*pixel_scale + -wind_vector_meters;
+            aim_here_vector_meters = gun_target_vector_pixels * pixel_scale + -wind_vector_meters;
 
             // calculate the distance along the new aiming vector
             distance_mag_meters = Mathf.Round(aim_here_vector_meters.magnitude);
@@ -107,47 +103,89 @@ public class CalculateAiming : MonoBehaviour
             azimuth_deg = Mathf.Round(azimuth_deg * 10.0f) / 10.0f;// X.Xdeg format
 
 
-            // ----
-            //Debug.Log("Pixel Wind X: " + wind_vector_meters.x + " Pixel Wind Y: " + wind_vector_meters.y);
-            //Debug.Log("Pixel Gun-Target Line Only X: " + gun_target_vector_pixels.x*pixel_scale + " Pixel Gun-Target Line Only Y: " + gun_target_vector_pixels.y*pixel_scale);
-            //Debug.Log("Pixel Where to Aim w/wind X: " + aim_here_vector_meters.x + " Pixel Where to Aim w/wind Y: " + aim_here_vector_meters.y);
-            // ----
-        }
-        else if (marker_class.is_grid_marker_open() && marker_class.is_target_marker_open())
-        {
-            // convert the distance in pixel to in-game meters
-            pixel_scale = GameWindowCanvas.GetComponent<MarkerLocations>().get_grid_marker_scale();
+            // **********************************************************
+            // Draw the dispersion ellipse and f(range, wind orientation)
+            // **********************************************************
+            if (OptionsPanelCanvas.GetComponent<DropdownController>().chosenPlatform.Name != "None")
+            {
+                num_range_ticks = OptionsPanelCanvas.GetComponent<DropdownController>().chosenPlatform.rangeTicks.Length;
+                float[] range_array_m = new float[num_range_ticks];
+                float[] dispersion_array_m = new float[num_range_ticks];
+                for (int i = 0; i < num_range_ticks; i++)
+                {
+                    range_array_m[i] = OptionsPanelCanvas.GetComponent<DropdownController>().chosenPlatform.rangeTicks[i];
+                    dispersion_array_m[i] = OptionsPanelCanvas.GetComponent<DropdownController>().chosenPlatform.baselineDispersion[i];
+                }
 
-            // get the dispersion for a platform in meters
-            dispersion_m = OptionsPanelCanvas.GetComponent<DropdownController>().dispersion;
+                // get the dispersion for a platform in meters
+                dispersion_m = interpolate(distance_mag_meters, range_array_m, dispersion_array_m, num_range_ticks);
+
+            }
+            else { dispersion_m = 0f; }
 
             // scale the dispersion circle based on the pixel_scale (if changed)
             if (dispersion_m != 0.0f)
             {
-                desired_disp_circle_size_pixel = dispersion_m / pixel_scale;
-                dispersion_circle.GetComponent<RectTransform>().sizeDelta = new Vector2(desired_disp_circle_size_pixel, desired_disp_circle_size_pixel);
-            }
+                // get the crosswise and in-track reduction
+                float cross_trk_shrink = OptionsPanelCanvas.GetComponent<DropdownController>().chosenPlatform.crossTrackReduction[0];
+                float in_trk_shrink = OptionsPanelCanvas.GetComponent<DropdownController>().chosenPlatform.inTrackReduction[0];
 
-            // output zeros since there is no difference to calculate if all three are not on screen
+                // scale the dispersion circle by the per gun factor as decimal
+                desired_disp_circle_size_pixel = dispersion_m / pixel_scale;
+                dispersion_circle.GetComponent<RectTransform>().sizeDelta = new Vector2(desired_disp_circle_size_pixel* (1f-cross_trk_shrink), desired_disp_circle_size_pixel* (1f-in_trk_shrink));
+
+                // rotate the dispersion circle so it "faces" into the wind (i.e. the wind affects the shot fall properly)
+                dispersion_circle.GetComponent<RectTransform>().Rotate(new Vector3(0, 0, -wind_delta_deg));
+
+                // turn on the marker if it already isn't
+                marker_class.set_dispersion_marker_open(true);
+            }
+            else { marker_class.set_dispersion_marker_open(false); } // make sure the dispersion marker is off because its size would be 0m
+
+
+
+            //// ----
+            //Debug.Log("Pixel Wind X: " + wind_vector_meters.x + " Pixel Wind Y: " + wind_vector_meters.y);
+            //Debug.Log("Pixel Gun-Target Line Only X: " + gun_target_vector_pixels.x * pixel_scale + " Pixel Gun-Target Line Only Y: " + gun_target_vector_pixels.y * pixel_scale);
+            //Debug.Log("Pixel Where to Aim w/wind X: " + aim_here_vector_meters.x + " Pixel Where to Aim w/wind Y: " + aim_here_vector_meters.y);
+            //// ----
+        }
+        //else if (marker_class.is_grid_marker_open() && marker_class.is_target_marker_open())
+        //{
+        //         // convert the distance in pixel to in-game meters
+        //         pixel_scale = GameWindowCanvas.GetComponent<MarkerLocations>().get_grid_marker_scale();
+
+        //         // get the dispersion for a platform in meters
+        //         dispersion_m = OptionsPanelCanvas.GetComponent<DropdownController>().dispersion;
+
+        //         // scale the dispersion circle based on the pixel_scale (if changed)
+        //         if (dispersion_m != 0.0f)
+        //         {
+        //             desired_disp_circle_size_pixel = dispersion_m / pixel_scale;
+        //             dispersion_circle.GetComponent<RectTransform>().sizeDelta = new Vector2(desired_disp_circle_size_pixel, desired_disp_circle_size_pixel);
+        //         }
+
+        //         // output zeros since there is no difference to calculate if all three are not on screen
+        //         azimuth_deg = 0.0f;
+        //         distance_mag_meters = 0.0f;
+        //}
+        else
+        {
+            // output zeros since there is no difference to calculate if all three icons are not on screen
+            // (makes user verify grid size matches map, and gun/target icons are where they want them)
             azimuth_deg = 0.0f;
             distance_mag_meters = 0.0f;
         }
-        else 
-        {
-            // output zeros since there is no difference to calculate if all three are not on screen
-            azimuth_deg = 0.0f; 
-            distance_mag_meters = 0.0f;
-        } 
 
-        // print the results to the text box
+        // print the calculation results to the text box
         text_panel.text = "Azimuth: " + azimuth_deg + " deg         Distance: " + distance_mag_meters + "m";
 
-        // color the AimingPanel if in range or not if a gun has been selected in the options drop down menus
-        Image aimingPanel = GetComponentInChildren<Image>();
-        if (OptionsPanelCanvas.GetComponent<DropdownController>().gun != 0 && distance_mag_meters > 0f)
+        // color the AimingPanel if in range or not, and if a weapon and type has been selected in the options drop down menus
+        UnityEngine.UI.Image aimingPanel = GetComponentInChildren<UnityEngine.UI.Image>();
+        if (OptionsPanelCanvas.GetComponent<DropdownController>().chosenPlatform.Name != "None" && distance_mag_meters > 0f)
         {
-            min_Range = OptionsPanelCanvas.GetComponent<DropdownController>().minRange;
-            max_Range = OptionsPanelCanvas.GetComponent<DropdownController>().maxRange;
+            min_Range = OptionsPanelCanvas.GetComponent<DropdownController>().chosenPlatform.minRange;
+            max_Range = OptionsPanelCanvas.GetComponent<DropdownController>().chosenPlatform.maxRange;
 
             if (distance_mag_meters >= min_Range && distance_mag_meters <= max_Range)
             {
@@ -164,7 +202,9 @@ public class CalculateAiming : MonoBehaviour
         {
             aimingPanel.color = Color.white;
         }
-
+        
+        // set the new wind direction as the previous for the next iteration
+        wind_prev_deg = wind_direction_deg;
     }
 
     void draw_projectile_line(Vector3 gun_target_vector, Vector3 gun_position, Vector3 target_position)
@@ -193,295 +233,44 @@ public class CalculateAiming : MonoBehaviour
         marker_class.set_aimline_open(true);
     }
     
-    float calc_wind_offset(int gun_type, int gun_platform, int wind_tier)
+    float interpolate(float aiming_range_m, float[] x_interp_array, float[] y_interp_array, int array_size)
     {
-        float wind_offset_mag = 0.0f; // initialize with
+        float start_interp_x = 0f, end_interp_x = 0f, start_interp_y = 0f, end_interp_y = 0f;
+        int start_idx, end_idx;
 
-        // insert equations/constants below for each wind tier once I know them in the future for
-        // each arty type
-		switch (gun_type)
+        if (array_size > 2)
         {
-            case 0: // no gun_type selected and independent of wind
-                wind_offset_mag = 0.0f;
-                break;
-            case 1: // mortars
-                switch (wind_tier)
+            start_idx = 0;
+            end_idx = 0;
+            for (int i = 0; i < array_size-1; i++)
+            {
+                if(aiming_range_m > x_interp_array[i] && aiming_range_m <= x_interp_array[i+1])
                 {
-                    case 1:
-                        wind_offset_mag = 0.0f;
-                        break;
-                    case 2:
-                        wind_offset_mag = 0.0f;
-                        break;
-                    case 3:
-                        wind_offset_mag = 0.0f;
-                        break;
-                    case 4:
-                        wind_offset_mag = 0.0f;
-                        break;
-                    case 5:
-                        wind_offset_mag = 0.0f;
-                        break;
+                    start_idx = i;
+                    end_idx = i+1;
                 }
-                break;
-            case 2: // gunboats
-                switch (wind_tier)
-                {
-                    case 1:
-                        wind_offset_mag = 0.0f;
-                        break;
-                    case 2:
-                        wind_offset_mag = 0.0f;
-                        break;
-                    case 3:
-                        wind_offset_mag = 0.0f;
-                        break;
-                    case 4:
-                        wind_offset_mag = 0.0f;
-                        break;
-                    case 5:
-                        wind_offset_mag = 0.0f;
-                        break;
-                }
-                break;
-            case 3: // 120mm (1: collie 120, 2: warden 120)
-                switch (wind_tier)
-                {
-                    case 1:
-                        switch (gun_platform)
-						{
-							case 1:
-								wind_offset_mag = 12.0f;
-								break;
-						
-							case 2:
-								wind_offset_mag = 15.0f;
-								break;
-						}
-						break;
-                    case 2:
-                        switch (gun_platform)
-						{
-							case 1:
-								wind_offset_mag = 24.0f;
-								break;
-						
-							case 2:
-								wind_offset_mag = 30.0f;
-								break;
-						}
-						break;
-                    case 3:
-                        switch (gun_platform)
-						{
-							case 1:
-								wind_offset_mag = 36.0f;
-								break;
-						
-							case 2:
-								wind_offset_mag = 45.0f;
-								break;
-						}
-						break;
-                    case 4:
-                        switch (gun_platform)
-						{
-							case 1:
-								wind_offset_mag = 48.0f;
-								break;
-						
-							case 2:
-								wind_offset_mag = 60.0f;
-								break;
-						}
-						break;
-                    case 5:
-                        switch (gun_platform)
-						{
-							case 1:
-								wind_offset_mag = 60.0f;
-								break;
-						
-							case 2:
-								wind_offset_mag = 75.0f;
-								break;
-						}
-						break;
-                }
-                break;
-            case 4: // 150mm (1: collie 150, 2: warden 150)
-                switch (wind_tier)
-                {
-                    case 1:
-                        switch (gun_platform)
-						{
-							case 1:
-								wind_offset_mag = 18.0f;
-								break;
-						
-							case 2:
-								wind_offset_mag = 15.0f;
-								break;
-						}
-						break;
-                    case 2:
-                        switch (gun_platform)
-						{
-							case 1:
-								wind_offset_mag = 36.0f;
-								break;
-						
-							case 2:
-								wind_offset_mag = 30.0f;
-								break;
-						}
-						break;
-                    case 3:
-                        switch (gun_platform)
-						{
-							case 1:
-								wind_offset_mag = 54.0f;
-								break;
-						
-							case 2:
-								wind_offset_mag = 45.0f;
-								break;
-						}
-						break;
-                    case 4:
-                        switch (gun_platform)
-						{
-							case 1:
-								wind_offset_mag = 72.0f;
-								break;
-						
-							case 2:
-								wind_offset_mag = 60.0f;
-								break;
-						}
-						break;
-                    case 5:
-                        switch (gun_platform)
-						{
-							case 1:
-								wind_offset_mag = 90.0f;
-								break;
-						
-							case 2:
-								wind_offset_mag = 75.0f;
-								break;
-						}
-						break;
-                }
-                break;
-            case 5: // 300mm (1: storm cannon, 2: rail storm cannon)
-                switch (wind_tier)
-                {
-                    case 1:
-                        switch (gun_platform)
-                        {
-                            case 1:
-                                wind_offset_mag = 60.0f;
-                                break;
-
-                            case 2:
-                                wind_offset_mag = 25.0f;
-                                break;
-                        }
-                        break;
-                    case 2:
-                        switch (gun_platform)
-                        {
-                            case 1:
-                                wind_offset_mag = 120.0f;
-                                break;
-
-                            case 2:
-                                wind_offset_mag = 50.0f;
-                                break;
-                        }
-                        break;
-                    case 3:
-                        switch (gun_platform)
-                        {
-                            case 1:
-                                wind_offset_mag = 180.0f;
-                                break;
-
-                            case 2:
-                                wind_offset_mag = 75.0f;
-                                break;
-                        }
-                        break;
-                    case 4:
-                        switch (gun_platform)
-                        {
-                            case 1:
-                                wind_offset_mag = 240.0f;
-                                break;
-
-                            case 2:
-                                wind_offset_mag = 100.0f;
-                                break;
-                        }
-                        break;
-                    case 5:
-                        switch (gun_platform)
-                        {
-                            case 1:
-                                wind_offset_mag = 300.0f;
-                                break;
-
-                            case 2:
-                                wind_offset_mag = 125.0f;
-                                break;
-                        }
-                        break;
-                }
-                break;
-            case 6: // rockets
-                switch (wind_tier)
-                {
-                    case 1:
-                        wind_offset_mag = 0.0f;
-                        break;
-                    case 2:
-                        wind_offset_mag = 0.0f;
-                        break;
-                    case 3:
-                        wind_offset_mag = 0.0f;
-                        break;
-                    case 4:
-                        wind_offset_mag = 0.0f;
-                        break;
-                    case 5:
-                        wind_offset_mag = 0.0f;
-                        break;
-                }
-                break;
-            case 7: // aimed infrastructure
-                switch (wind_tier)
-                {
-                    case 1:
-                        wind_offset_mag = 0.0f;
-                        break;
-                    case 2:
-                        wind_offset_mag = 0.0f;
-                        break;
-                    case 3:
-                        wind_offset_mag = 0.0f;
-                        break;
-                    case 4:
-                        wind_offset_mag = 0.0f;
-                        break;
-                    case 5:
-                        wind_offset_mag = 0.0f;
-                        break;
-                }
-                break;
+                start_interp_x  = x_interp_array[start_idx];
+                end_interp_x    = x_interp_array[end_idx];
+                start_interp_y  = y_interp_array[start_idx];
+                end_interp_y    = y_interp_array[end_idx];
+            }
+        }
+        else // only 2 values in the arrays
+        {
+            start_interp_x  = x_interp_array[0];
+            end_interp_x    = x_interp_array[1];
+            start_interp_y  = y_interp_array[0];
+            end_interp_y    = y_interp_array[1];
         }
 
+        // linear interpolate using the calculated true aiming range, including wind bias, to find the shot dispersion at impact
+        float interp_out_m = (start_interp_y * (end_interp_x - aiming_range_m) + end_interp_y * (aiming_range_m - start_interp_x)) / (end_interp_x - start_interp_x);
 
-        return wind_offset_mag;
+        // limit the result to the values in the json file
+        if(interp_out_m < start_interp_y) { interp_out_m = start_interp_y; }
+        if (interp_out_m > end_interp_y) { interp_out_m = end_interp_y; }
+
+        return interp_out_m;
     }
+
 }

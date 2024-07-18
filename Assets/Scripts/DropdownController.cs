@@ -44,11 +44,6 @@ public class DropdownController : MonoBehaviour
     [SerializeField] Sprite intelcenter;
 
     // accessible outputs to other methods
-    public int gunType;
-    public int gun;
-    public float minRange;
-    public float maxRange;
-    public float dispersion;
     public platformWindageStats chosenPlatform;
     public List<platformWindageStats> platformWindages;
 
@@ -68,32 +63,11 @@ public class DropdownController : MonoBehaviour
 
     void Awake()
     {
-        gunType = 0;
-        gun = 0;
-        minRange = 0f;
-        maxRange = 0f;
-        dispersion = 0f;
-
-        // creating a dummy class object on initialization
-        platformWindageStats chosenPlatform = new platformWindageStats
-        {
-            Name = "None",
-            Notes = "None",
-            minRange = 0f,
-            maxRange = 0f,
-            rangeTicks = new float[] { 0f, 0f },
-            baselineDispersion = new float[] { 0f, 0f },
-            windTierBias = new float[] { 0f, 0f },
-            crossTrackReduction = new float[] { 0f, 0f },
-            inTrackReduction = new float[] { 0f, 0f },
-        };
-
         // load the json data on first start
         load_json_data();
-
     }
 
-    void load_json_data()
+    public void load_json_data()
     {
         
         // ***********************
@@ -112,52 +86,8 @@ public class DropdownController : MonoBehaviour
         // populate the global List of all parsed platform json values
         platformWindages = myData;
 
-
-        //// load the class objects for every arty platform
-        //platformWindageStats mortar             = myData[0];
-        //platformWindageStats mortarCHt          = myData[1];
-        //platformWindageStats mortarWLt          = myData[2];
-        //platformWindageStats gunBoatC           = myData[3];
-        //platformWindageStats gunBoatW           = myData[4];
-        //platformWindageStats shipCDD            = myData[5];
-        //platformWindageStats shipWFrig          = myData[6];
-        //platformWindageStats shipCBB            = myData[7];
-        //platformWindageStats shipWBB            = myData[8];
-        //platformWindageStats artyC120           = myData[9];
-        //platformWindageStats artyW120           = myData[10];
-        //platformWindageStats artyC150           = myData[11];
-        //platformWindageStats artyW150           = myData[12];
-        //platformWindageStats artyC150SPG        = myData[13];
-        //platformWindageStats artyW150SPG        = myData[14];
-        //platformWindageStats arty300            = myData[15];
-        //platformWindageStats artyRails300       = myData[16];
-        //platformWindageStats rocketCTankette    = myData[17];
-        //platformWindageStats rocketCTruck       = myData[18];
-        //platformWindageStats rocketCEmplace     = myData[19];
-        //platformWindageStats rocketWTank        = myData[20];
-        //platformWindageStats rocketWpush        = myData[21];
-        //platformWindageStats rocketWHt          = myData[22];
-        //platformWindageStats artyIntelCenter    = myData[23];
-
-        //// DEBUG
-        //// ----------------------------------------------------
-        //Debug.Log("Name:" + mortar.Name);
-        //Debug.Log("Notes:" + mortar.Notes);
-        //Debug.Log("Min range:" + mortar.minRange);
-        //Debug.Log("Max range:" + mortar.maxRange);
-        //
-        //for (int i = 0; i < mortar.rangeTicks.Length; i++) 
-        //{
-        //    Debug.Log("Range:" + mortar.rangeTicks[i]);
-        //    Debug.Log("Disp:" + mortar.baselineDispersion[i]);
-        //    Debug.Log("Bias:" + mortar.windTierBias[i]);            
-        //}
-        //
-        //Debug.Log("Cross:" + mortar.crossTrackReduction[0]);
-        //Debug.Log("InTrack:" + mortar.inTrackReduction[0]);
-        //// ----------------------------------------------------
-
-
+        // re-grab the dropdown box selections A) for the first time on init or B) if data file being reloaded 
+        get_gunplatform_selections();
     }
    
     public void populate_gunmodels()
@@ -180,11 +110,13 @@ public class DropdownController : MonoBehaviour
                 items.Add("Colonial \"Pelta\" Mortar Halftrack");
                 items.Add("Warden \"Devitte-Cain\" Mortar Tank");
                 break;
+
             case 2:
                 items.Add("Choose a platform");
                 items.Add("Colonial \"Charon\" Gunboat");
                 items.Add("Warden \"Ronan\" Gunboat");
                 break;
+
             case 3:
                 items.Add("Choose a platform");
                 items.Add("Colonial \"Conqueror\" Destroyer");
@@ -192,11 +124,13 @@ public class DropdownController : MonoBehaviour
                 items.Add("Colonial \"Titan\" Battleship");
                 items.Add("Warden \"Callahan\" Battleship");
                 break;
+
             case 4:
                 items.Add("Choose a platform");
                 items.Add("Colonial \"Koronides\" Field Gun");
                 items.Add("Warden \"Huber Lariat\" Light Artillery");
                 break;
+
             case 5:
                 items.Add("Choose a platform");
                 items.Add("Colonial \"Thunderbolt\" Cannon");
@@ -204,11 +138,13 @@ public class DropdownController : MonoBehaviour
                 items.Add("Colonial Lance-46 \"Sarissa\" SPG");
                 items.Add("Warden Flood Mk. IX \"Stain\" SPG");
                 break;
+
             case 6:
                 items.Add("Choose a platform");
                 items.Add("Storm Cannon");
                 items.Add("\"Tempest\" Rail Cannon");
                 break;
+
             case 7:
                 items.Add("Choose a platform");
                 items.Add("Colonial \"Deioneus\" Rocket Tankette");
@@ -218,6 +154,7 @@ public class DropdownController : MonoBehaviour
                 items.Add("Warden \"Wasp Nest\" Rocket Launcher");
                 items.Add("Warden \"Skycaller\" Rocket Halftrack");
                 break;
+
             case 8:
                 items.Add("Choose a platform");
                 items.Add("Intelligence Center");
@@ -233,16 +170,16 @@ public class DropdownController : MonoBehaviour
 
     public void get_gunplatform_selections() // platform related data goes here. eventually convert to file driven system
     {
-        gunType = typeDropdown.value;
-        gun = weaponDropdown.value;
+        int weapontype = typeDropdown.value;
+        int gunPlatform = weaponDropdown.value;
 
         // change the image sprite
-        switch (gunType)
+        switch (weapontype)
         {
             case 0: // None (default)
-                dispersion = 0f; // reset this value if you switch from anything else back to distance only
 
-                platformWindageStats aa = new platformWindageStats
+                // setting global variable to default
+                platformWindageStats temp_var = new platformWindageStats
                 {
                     Name = "None",
                     Notes = "None",
@@ -254,12 +191,11 @@ public class DropdownController : MonoBehaviour
                     crossTrackReduction = new float[] { 0f, 0f },
                     inTrackReduction = new float[] { 0f, 0f },
                 };
-
-                chosenPlatform = aa;
+                chosenPlatform = temp_var;
                 break;
 
             case 1: // mortars
-                switch (gun)
+                switch (gunPlatform)
                 {
                     case 1:
                         gunImage.GetComponent<Image>().sprite = normal_mortar;
@@ -277,7 +213,7 @@ public class DropdownController : MonoBehaviour
                 break;
 
             case 2: // gunboats
-                switch (gun)
+                switch (gunPlatform)
                 {
                     case 1:
                         gunImage.GetComponent<Image>().sprite = collie_gb;
@@ -291,7 +227,7 @@ public class DropdownController : MonoBehaviour
                 break;
 
             case 3: // large ships
-                switch (gun)
+                switch (gunPlatform)
                 {
                     case 1:
                         gunImage.GetComponent<Image>().sprite = collie_DD;
@@ -313,7 +249,7 @@ public class DropdownController : MonoBehaviour
                 break;
 
             case 4: // 120mm
-                switch (gun)
+                switch (gunPlatform)
                 {
                     case 1:
                         gunImage.GetComponent<Image>().sprite = collie_120;
@@ -327,7 +263,7 @@ public class DropdownController : MonoBehaviour
                 break;
 
             case 5: // 150mm
-                switch (gun)
+                switch (gunPlatform)
                 {
                     case 1:
                         gunImage.GetComponent<Image>().sprite = collie_150;
@@ -349,7 +285,7 @@ public class DropdownController : MonoBehaviour
                 break;
 
             case 6: // 300mm
-                switch (gun)
+                switch (gunPlatform)
                 {
                     case 1:
                         gunImage.GetComponent<Image>().sprite = stormcannon;
@@ -363,7 +299,7 @@ public class DropdownController : MonoBehaviour
                 break;
 
             case 7: // rockets
-                switch (gun)
+                switch (gunPlatform)
                 {
                     case 1:
                         gunImage.GetComponent<Image>().sprite = collie_rockettankette;
@@ -393,7 +329,7 @@ public class DropdownController : MonoBehaviour
                 break;
 
             case 8: // aimed infrastructure
-                switch (gun)
+                switch (gunPlatform)
                 {
                     case 1:
                         gunImage.GetComponent<Image>().sprite = intelcenter;
@@ -407,14 +343,9 @@ public class DropdownController : MonoBehaviour
 
     public void reset_dropdowns()
     {
-        gunType = 0;
-        gun = 0;
-        minRange = 0f;
-        maxRange = 0f;
-        dispersion = 0f;
-        typeDropdown.value = 0;
 
-        platformWindageStats aa = new platformWindageStats
+        // setting global variable to default
+        platformWindageStats temp_var = new platformWindageStats
         {
             Name = "None",
             Notes = "None",
@@ -426,13 +357,15 @@ public class DropdownController : MonoBehaviour
             crossTrackReduction = new float[] { 0f, 0f },
             inTrackReduction = new float[] { 0f, 0f },
         };
-
-        chosenPlatform = aa;
+        chosenPlatform = temp_var;
 
         // clear any previous dropdown items      
+        typeDropdown.value = 0;
+
         weaponDropdown.options.Add(new TMP_Dropdown.OptionData() { text = "Gun Model" });
         weaponDropdown.value = 0;
         weaponDropdown.options.Clear();
+        
         gunImage.GetComponent<Image>().sprite = null;
     }
 

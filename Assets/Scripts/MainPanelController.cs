@@ -136,14 +136,14 @@ public class MainPanelController : MonoBehaviour
         {
             marker_class.set_target_marker_open(true);
 
-            if (OptionsMenuCanvas.GetComponent<DropdownController>().dispersion != 0.0)
-            {
-                marker_class.set_dispersion_marker_open(true);
-            }
-            else
-            {
-                marker_class.set_dispersion_marker_open(false); // make sure it's closed and definitely not open
-            }
+            //if (OptionsMenuCanvas.GetComponent<DropdownController>().dispersion != 0.0)
+            //{
+            //    marker_class.set_dispersion_marker_open(true);
+            //}
+            //else
+            //{
+            //    marker_class.set_dispersion_marker_open(false); // make sure it's closed and definitely not open
+            //}
         }
         else
         {
