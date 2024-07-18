@@ -127,8 +127,8 @@ public class CalculateAiming : MonoBehaviour
             if (dispersion_m != 0.0f)
             {
                 // get the crosswise and in-track reduction
-                float cross_trk_shrink = OptionsPanelCanvas.GetComponent<DropdownController>().chosenPlatform.crossTrackReduction[0];
-                float in_trk_shrink = OptionsPanelCanvas.GetComponent<DropdownController>().chosenPlatform.inTrackReduction[0];
+                float cross_trk_shrink = OptionsPanelCanvas.GetComponent<DropdownController>().chosenPlatform.crossTrackReduction[wind_tier - 1];
+                float in_trk_shrink = OptionsPanelCanvas.GetComponent<DropdownController>().chosenPlatform.inTrackReduction[wind_tier - 1];
 
                 // scale the dispersion circle by the per gun factor as decimal
                 desired_disp_circle_size_pixel = dispersion_m / pixel_scale;

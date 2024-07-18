@@ -8,20 +8,26 @@
     80.0
   ],
   "baselineDispersion": [
-    5.5,
-    12.0
+    8.0,
+    14.0
   ],
   "windTierBias": [
     0.0,
-    0.0,
-    0.0,
+    23.5,
+    27.0,
     0.0
   ],
   "crossTrackReduction": [
-    0.0
+    0.1,
+	0.2,
+	0.0,
+	0.0
   ],
   "inTrackReduction": [
-    0.0
+    0.0,
+	0.0,
+	0.0,
+	0.0
   ]
 },
 {
@@ -252,7 +258,7 @@
     0.0
   ],
   "crossTrackReduction": [
-    0.0
+    0.2
   ],
   "inTrackReduction": [
     0.0
