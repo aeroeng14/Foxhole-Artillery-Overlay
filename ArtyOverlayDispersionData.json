@@ -1,6 +1,6 @@
 [{
   "Name": "Handheld Mortar",
-  "Notes": "Wiki Values",
+  "Notes": "T1-3 all good",
   "minRange": 45.0,
   "maxRange": 80.0,
   "rangeTicks": [
@@ -9,19 +9,19 @@
   ],
   "baselineDispersion": [
     8.0,
-    14.0
+    18.0
   ],
   "windTierBias": [
-    0.0,
-    23.5,
+    12.5,
+    30.5,
     27.0,
-    0.0
+    35.0
   ],
   "crossTrackReduction": [
     0.1,
 	0.2,
-	0.0,
-	0.0
+	0.25,
+	0.32
   ],
   "inTrackReduction": [
     0.0,
@@ -32,7 +32,7 @@
 },
 {
   "Name": "Colonial Mortar Halftrack",
-  "Notes": "Wiki Values",
+  "Notes": "No wind yet",
   "minRange": 45.0,
   "maxRange": 80.0,
   "rangeTicks": [
@@ -50,15 +50,21 @@
     0.0
   ],
   "crossTrackReduction": [
-    0.0
+    0.0,
+    0.0,
+    0.0,
+	0.0
   ],
   "inTrackReduction": [
-    0.0
+    0.0,
+	0.0,
+    0.0,
+	0.0
   ]
 },
 {
   "Name": "Warden Mortar Tank",
-  "Notes": "Wiki Values",
+  "Notes": "No wind yet",
   "minRange": 45.0,
   "maxRange": 80.0,
   "rangeTicks": [
@@ -76,15 +82,21 @@
     0.0
   ],
   "crossTrackReduction": [
-    0.0
+    0.0,
+	0.0,
+    0.0,
+	0.0
   ],
   "inTrackReduction": [
-    0.0
+    0.0,
+	0.0,
+    0.0,
+	0.0
   ]
 },
 {
   "Name": "Colonial Gunboat",
-  "Notes": "Wiki Values",
+  "Notes": "No wind yet",
   "minRange": 75.0,
   "maxRange": 100.0,
   "rangeTicks": [
@@ -102,15 +114,21 @@
     0.0
   ],
   "crossTrackReduction": [
-    0.0
+    0.0,
+	0.0,
+    0.0,
+	0.0
   ],
   "inTrackReduction": [
-    0.0
+    0.0,
+	0.0,
+    0.0,
+	0.0
   ]
 },
 {
   "Name": "Warden Gunboat",
-  "Notes": "Wiki Values",
+  "Notes": "No wind yet",
   "minRange": 75.0,
   "maxRange": 100.0,
   "rangeTicks": [
@@ -128,15 +146,21 @@
     0.0
   ],
   "crossTrackReduction": [
-    0.0
+    0.0,
+	0.0,
+    0.0,
+	0.0
   ],
   "inTrackReduction": [
-    0.0
+    0.0,
+	0.0,
+    0.0,
+	0.0
   ]
 },
 {
   "Name": "Colonial DD",
-  "Notes": "Wiki Values",
+  "Notes": "No wind yet",
   "minRange": 100.0,
   "maxRange": 200.0,
   "rangeTicks": [
@@ -154,15 +178,21 @@
     0.0
   ],
   "crossTrackReduction": [
-    0.0
+    0.0,
+	0.0,
+    0.0,
+	0.0
   ],
   "inTrackReduction": [
-    0.0
+    0.0,
+	0.0,
+    0.0,
+	0.0
   ]
 },
 {
   "Name": "Warden Frigate",
-  "Notes": "Wiki Values",
+  "Notes": "No wind yet",
   "minRange": 100.0,
   "maxRange": 200.0,
   "rangeTicks": [
@@ -180,15 +210,21 @@
     0.0
   ],
   "crossTrackReduction": [
-    0.0
+    0.0,
+	0.0,
+    0.0,
+	0.0
   ],
   "inTrackReduction": [
-    0.0
+    0.0,
+	0.0,
+    0.0,
+	0.0
   ]
 },
 {
   "Name": "Colonial BB",
-  "Notes": "Wiki Values",
+  "Notes": "No wind yet",
   "minRange": 100.0,
   "maxRange": 225.0,
   "rangeTicks": [
@@ -206,15 +242,21 @@
     0.0
   ],
   "crossTrackReduction": [
-    0.0
+    0.0,
+	0.0,
+    0.0,
+	0.0
   ],
   "inTrackReduction": [
-    0.0
+    0.0,
+	0.0,
+    0.0,
+	0.0
   ]
 },
 {
   "Name": "Warden BB",
-  "Notes": "Wiki Values",
+  "Notes": "No wind yet",
   "minRange": 100.0,
   "maxRange": 225.0,
   "rangeTicks": [
@@ -232,15 +274,21 @@
     0.0
   ],
   "crossTrackReduction": [
-    0.0
+    0.0,
+	0.0,
+    0.0,
+	0.0
   ],
   "inTrackReduction": [
-    0.0
+    0.0,
+	0.0,
+    0.0,
+	0.0
   ]
 },
 {
   "Name": "Colonial 120mm",
-  "Notes": "Wiki Values",
+  "Notes": "T1-2 all good",
   "minRange": 100.0,
   "maxRange": 250.0,
   "rangeTicks": [
@@ -248,25 +296,31 @@
     250.0
   ],
   "baselineDispersion": [
-    22.5,
-    30.0
+    35.0,
+    50.0
   ],
   "windTierBias": [
-    0.0,
-    0.0,
-    0.0,
+    12.5,
+    20.0,
+    30.0,
     0.0
   ],
   "crossTrackReduction": [
-    0.2
+    0.1,
+	0.2,
+	0.25,
+	0.0
   ],
   "inTrackReduction": [
-    0.0
+    0.0,
+	0.0,
+	0.0,
+	0.0
   ]
 },
 {
   "Name": "Warden 120mm",
-  "Notes": "Wiki Values",
+  "Notes": "No wind yet",
   "minRange": 100.0,
   "maxRange": 300.0,
   "rangeTicks": [
@@ -284,15 +338,21 @@
     0.0
   ],
   "crossTrackReduction": [
-    0.0
+    0.0,
+	0.0,
+    0.0,
+	0.0
   ],
   "inTrackReduction": [
-    0.0
+    0.0,
+	0.0,
+    0.0,
+	0.0
   ]
 },
 {
   "Name": "Colonial 150mm",
-  "Notes": "Wiki Values",
+  "Notes": "No wind yet",
   "minRange": 200.0,
   "maxRange": 350.0,
   "rangeTicks": [
@@ -310,15 +370,21 @@
     0.0
   ],
   "crossTrackReduction": [
-    0.0
+    0.0,
+	0.0,
+    0.0,
+	0.0
   ],
   "inTrackReduction": [
-    0.0
+    0.0,
+	0.0,
+    0.0,
+	0.0
   ]
 },
 {
   "Name": "Warden 150mm",
-  "Notes": "Wiki Values",
+  "Notes": "No wind yet",
   "minRange": 100.0,
   "maxRange": 300.0,
   "rangeTicks": [
@@ -336,15 +402,21 @@
     0.0
   ],
   "crossTrackReduction": [
-    0.0
+    0.0,
+	0.0,
+    0.0,
+	0.0
   ],
   "inTrackReduction": [
-    0.0
+    0.0,
+	0.0,
+    0.0,
+	0.0
   ]
 },
 {
   "Name": "Colonial 150mm SPG",
-  "Notes": "Wiki Values",
+  "Notes": "No wind yet",
   "minRange": 120.0,
   "maxRange": 250.0,
   "rangeTicks": [
@@ -362,15 +434,21 @@
     0.0
   ],
   "crossTrackReduction": [
-    0.0
+    0.0,
+	0.0,
+    0.0,
+	0.0
   ],
   "inTrackReduction": [
-    0.0
+    0.0,
+	0.0,
+    0.0,
+	0.0
   ]
 },
 {
   "Name": "Warden 150mm SPG",
-  "Notes": "Wiki Values",
+  "Notes": "No wind yet",
   "minRange": 120.0,
   "maxRange": 250.0,
   "rangeTicks": [
@@ -388,15 +466,21 @@
     0.0
   ],
   "crossTrackReduction": [
-    0.0
+    0.0,
+	0.0,
+    0.0,
+	0.0
   ],
   "inTrackReduction": [
-    0.0
+    0.0,
+	0.0,
+    0.0,
+	0.0
   ]
 },
 {
   "Name": "Storm Cannon",
-  "Notes": "Wiki Values",
+  "Notes": "No wind yet",
   "minRange": 400.0,
   "maxRange": 1000.0,
   "rangeTicks": [
@@ -414,15 +498,21 @@
     0.0
   ],
   "crossTrackReduction": [
-    0.0
+    0.0,
+	0.0,
+    0.0,
+	0.0
   ],
   "inTrackReduction": [
-    0.0
+    0.0,
+	0.0,
+    0.0,
+	0.0
   ]
 },
 {
   "Name": "300mm Rail Cannon",
-  "Notes": "Wiki Values",
+  "Notes": "No wind yet",
   "minRange": 350.0,
   "maxRange": 500.0,
   "rangeTicks": [
@@ -440,15 +530,21 @@
     0.0
   ],
   "crossTrackReduction": [
-    0.0
+    0.0,
+	0.0,
+    0.0,
+	0.0
   ],
   "inTrackReduction": [
-    0.0
+    0.0,
+	0.0,
+    0.0,
+	0.0
   ]
 },
 {
   "Name": "Rocket Tankette",
-  "Notes": "Wiki Values",
+  "Notes": "No wind yet",
   "minRange": 250.0,
   "maxRange": 300.0,
   "rangeTicks": [
@@ -466,15 +562,21 @@
     0.0
   ],
   "crossTrackReduction": [
-    0.0
+    0.0,
+	0.0,
+    0.0,
+	0.0
   ],
   "inTrackReduction": [
-    0.0
+    0.0,
+	0.0,
+    0.0,
+	0.0
   ]
 },
 {
   "Name": "Rocket Truck",
-  "Notes": "Wiki Values",
+  "Notes": "No wind yet",
   "minRange": 225.0,
   "maxRange": 350.0,
   "rangeTicks": [
@@ -492,15 +594,21 @@
     0.0
   ],
   "crossTrackReduction": [
-    0.0
+    0.0,
+	0.0,
+    0.0,
+	0.0
   ],
   "inTrackReduction": [
-    0.0
+    0.0,
+	0.0,
+    0.0,
+	0.0
   ]
 },
 {
   "Name": "Rocket Battery",
-  "Notes": "Wiki Values",
+  "Notes": "No wind yet",
   "minRange": 200.0,
   "maxRange": 425.0,
   "rangeTicks": [
@@ -518,15 +626,21 @@
     0.0
   ],
   "crossTrackReduction": [
-    0.0
+    0.0,
+	0.0,
+    0.0,
+	0.0
   ],
   "inTrackReduction": [
-    0.0
+    0.0,
+	0.0,
+    0.0,
+	0.0
   ]
 },
 {
   "Name": "Rocket Scout Tank",
-  "Notes": "Wiki Values",
+  "Notes": "No wind yet",
   "minRange": 200.0,
   "maxRange": 350.0,
   "rangeTicks": [
@@ -544,15 +658,21 @@
     0.0
   ],
   "crossTrackReduction": [
-    0.0
+    0.0,
+	0.0,
+    0.0,
+	0.0
   ],
   "inTrackReduction": [
-    0.0
+    0.0,
+	0.0,
+    0.0,
+	0.0
   ]
 },
 {
   "Name": "Rocket Pushcart",
-  "Notes": "Wiki Values",
+  "Notes": "No wind yet",
   "minRange": 225.0,
   "maxRange": 325.0,
   "rangeTicks": [
@@ -570,15 +690,21 @@
     0.0
   ],
   "crossTrackReduction": [
-    0.0
+    0.0,
+	0.0,
+    0.0,
+	0.0
   ],
   "inTrackReduction": [
-    0.0
+    0.0,
+	0.0,
+    0.0,
+	0.0
   ]
 },
 {
   "Name": "Rocket Halftrack",
-  "Notes": "Wiki Values",
+  "Notes": "No wind yet",
   "minRange": 200.0,
   "maxRange": 275.0,
   "rangeTicks": [
@@ -596,10 +722,16 @@
     0.0
   ],
   "crossTrackReduction": [
-    0.0
+    0.0,
+	0.0,
+    0.0,
+	0.0
   ],
   "inTrackReduction": [
-    0.0
+    0.0,
+	0.0,
+    0.0,
+	0.0
   ]
 },
 {
@@ -622,9 +754,15 @@
     0.0
   ],
   "crossTrackReduction": [
-    0.0
+    0.0,
+	0.0,
+    0.0,
+	0.0
   ],
   "inTrackReduction": [
-    0.0
+    0.0,
+	0.0,
+    0.0,
+	0.0
   ]
 }]
