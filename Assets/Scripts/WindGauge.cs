@@ -8,6 +8,7 @@ public class WindGauge : MonoBehaviour
     [SerializeField] GameObject wind_t2;
     [SerializeField] GameObject wind_t3;
     [SerializeField] GameObject wind_t4;
+    [SerializeField] GameObject wind_t5;
     [SerializeField] GameObject wind_gauge;
 
     // accessed by calculate_aimpoint() in CalculateAiming.cs
@@ -41,9 +42,14 @@ public class WindGauge : MonoBehaviour
                 wind_t4.SetActive(true);
                 break;
             case 4:
-                wind_strength = 1;
+                wind_strength++;
                 wind_t4.SetActive(false);
-                wind_t1.SetActive(true);
+                wind_t5.SetActive(true);
+                break;
+            case 5:
+                wind_strength = 1;
+                wind_t5.SetActive(false);
+                wind_t1.SetActive(true);                                
                 break;
         }
     }
@@ -84,5 +90,6 @@ public class WindGauge : MonoBehaviour
         wind_t2.SetActive(false);
         wind_t3.SetActive(false);
         wind_t4.SetActive(false);
+        wind_t5.SetActive(false);
     }
 }
