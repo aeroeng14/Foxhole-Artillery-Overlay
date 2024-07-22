@@ -94,7 +94,7 @@ public class CalculateAiming : MonoBehaviour
             aim_here_vector_meters = gun_target_vector_pixels * pixel_scale + -wind_vector_meters;
 
             // calculate the distance along the new aiming vector
-            distance_mag_meters = Mathf.Round(aim_here_vector_meters.magnitude);
+            distance_mag_meters = Mathf.Round(aim_here_vector_meters.magnitude*10f)/10f; // XXX.Xm format
 
             // calculate the azimuth between the aiming line and due N (Up in the canvas)
             azimuth_deg = Vector3.SignedAngle(aim_here_vector_meters, transform.up, new Vector3(0, 0, 1));
@@ -178,7 +178,7 @@ public class CalculateAiming : MonoBehaviour
         }
 
         // print the calculation results to the text box
-        text_panel.text = "Azimuth: " + azimuth_deg + " deg         Distance: " + distance_mag_meters + "m";
+        text_panel.text = "Azimuth: " + azimuth_deg + " deg         Distance: " + distance_mag_meters + " m";
 
         // color the AimingPanel if in range or not, and if a weapon and type has been selected in the options drop down menus
         UnityEngine.UI.Image aimingPanel = GetComponentInChildren<UnityEngine.UI.Image>();
