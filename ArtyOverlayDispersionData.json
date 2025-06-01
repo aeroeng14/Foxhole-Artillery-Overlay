@@ -630,23 +630,23 @@
 },
 {
   "Name": "Rocket Truck",
-  "Notes": "No wind yet",
-  "minRange": 225.0,
-  "maxRange": 350.0,
+  "Notes": "Sighted in, good circle no reductions",
+  "minRange": 375.0,
+  "maxRange": 500.0,
   "rangeTicks": [
-    225.0,
-    350.0
+    375.0,
+    500.0
   ],
   "baselineDispersion": [
-    25.0,
-    41.5
+    90.0,
+    100.0
   ],
   "windTierBias": [
-    0.0,
-    0.0,
-    0.0,
-    0.0,
-	0.0
+    5.0,
+    18.0,
+    35.0,
+    40.0,
+	60.0
   ],
   "crossTrackReduction": [
     0.0,
@@ -665,23 +665,23 @@
 },
 {
   "Name": "Rocket Battery",
-  "Notes": "No wind yet",
-  "minRange": 200.0,
-  "maxRange": 425.0,
+  "Notes": "T1 wind good, disp seems to match. smoosh cross track?",
+  "minRange": 300.0,
+  "maxRange": 575.0,
   "rangeTicks": [
-    200.0,
-    425.0
+    300.0,
+    575.0
   ],
   "baselineDispersion": [
-    25.0,
-    41.5
+    90.0,
+    100.0
   ],
   "windTierBias": [
-    0.0,
-    0.0,
-    0.0,
-    0.0,
-	0.0
+    5.0,
+    18.0,
+    35.0,
+    40.0,
+    60.0
   ],
   "crossTrackReduction": [
     0.0,
