@@ -4083,7 +4083,7 @@ MonoBehaviour:
   collie_rockettankette: {fileID: 21300000, guid: c023449e9e0196a448b15f1225cba6d7, type: 3}
   collie_rockettruck: {fileID: 21300000, guid: 135620c053f224c4c86937d2fb4fbab5, type: 3}
   collie_rocketbattery: {fileID: 21300000, guid: 0bf1f3eb2999a7642abe9f8d65415227, type: 3}
-  warden_rockettank: {fileID: 21300000, guid: 79857770a6454a142aa8b012081fbd5f, type: 3}
+  warden_rocketarmoredcar: {fileID: 21300000, guid: 1af86c7083bdeed498d4237f9e376ebc, type: 3}
   warden_rocketpush: {fileID: 21300000, guid: 2c8a74a9a0405704b97f00800f991f68, type: 3}
   warden_rocketht: {fileID: 21300000, guid: d8b6a95768387624cb083030d1b92309, type: 3}
   intelcenter: {fileID: 21300000, guid: e500c83f822d79940ad8f9e9041d950c, type: 3}
