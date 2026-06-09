@@ -38,7 +38,7 @@ public class DropdownController : MonoBehaviour
     [SerializeField] Sprite collie_rockettankette;
     [SerializeField] Sprite collie_rockettruck;
     [SerializeField] Sprite collie_rocketbattery;
-    [SerializeField] Sprite warden_rockettank;
+    [SerializeField] Sprite warden_rocketarmoredcar;
     [SerializeField] Sprite warden_rocketpush;
     [SerializeField] Sprite warden_rocketht;
     [SerializeField] Sprite intelcenter;
@@ -150,7 +150,7 @@ public class DropdownController : MonoBehaviour
                 items.Add("Colonial \"Deioneus\" Rocket Tankette");
                 items.Add("Colonial \"Retiarius\" Rocket Truck");
                 items.Add("Colonial \"Hades' Net\" Rocket Battery");
-                items.Add("Warden \"King Jester\" Rocket Scout Tank");
+                items.Add("Warden \"Squire\" Rocket Armored Car");
                 items.Add("Warden \"Wasp Nest\" Rocket Launcher");
                 items.Add("Warden \"Skycaller\" Rocket Halftrack");
                 break;
@@ -314,7 +314,7 @@ public class DropdownController : MonoBehaviour
                         chosenPlatform = platformWindages[19];
                         break;
                     case 4:
-                        gunImage.GetComponent<Image>().sprite = warden_rockettank;
+                        gunImage.GetComponent<Image>().sprite = warden_rocketarmoredcar;
                         chosenPlatform = platformWindages[20];
                         break;
                     case 5:
